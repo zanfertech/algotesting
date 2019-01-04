@@ -1,17 +1,17 @@
 #!/usr/bin/env python3.6
 
 PRIMES = []
-flag = []
 
-for x in range(2,200):
+for x in range(2,1000):
     flag = []
-    for n in range(2,10):
+    #for n in range(2,x):
+    for n in range(2,int((x/2)+1)):
         if x == n:
             continue
         elif (x % n) == 0:
             flag.append(n)
     if len(flag) == 0:
-        print("{} is prime".format(x))
+        #debug# print("{} is prime".format(x))
         PRIMES.append(x)
 
 print(PRIMES)
