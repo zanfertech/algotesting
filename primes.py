@@ -2,7 +2,7 @@
 
 PRIMES = []
 
-for x in range(2,1000):
+for x in range(2,10000):
     flag = []
     #for n in range(2,x):
     for n in range(2,int((x/2)+1)):  ## Algo change cause a number can never be divisible by a number more than half it's value
