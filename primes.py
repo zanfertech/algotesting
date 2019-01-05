@@ -10,7 +10,8 @@ for x in range(2,1000):
         #    continue
         if (x % n) == 0:  ## Used to be elif, because there was a chance x could == n
             flag.append(n)
-    if len(flag) == 0:
+#    if len(flag) == 0:
+    if not flag:
         #debug# print("{} is prime".format(x))
         PRIMES.append(x)
 
