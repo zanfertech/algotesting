@@ -2,6 +2,7 @@
 
 import os #gonna read from file cause its cool
 
+
 def main():
     t = open("/home/cloud_user/bin/toe.txt", "r")
 
