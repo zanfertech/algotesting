@@ -2,7 +2,7 @@
 
 PRIMES = []
 
-for x in range(2,1000):
+for x in range(2,10000):
     no_remainder = False
     for n in range(2,int((x/2)+1)):
         if (x % n) == 0:
