@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-AR = [5, 1, 3, 2 ,7, 4, 9, 6]
+AR = [5, 1, 14, 9, 6, 19, 17, 2 ,7, 4, 12, 15, 3, 11, 10, 8 ]
 
 index = 0
 flag = 0
@@ -24,6 +24,6 @@ while index < len(AR):
     if index == (len(AR) - 1) and flag == 0:
         break
 
-    print(AR) #DEBUG
+#    print(AR) #DEBUG
 
 print("Sorted array: {}".format(AR))
