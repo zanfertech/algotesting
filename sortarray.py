@@ -12,10 +12,9 @@ while index < len(AR):
 #    print(flag) #DEBUG
     if AR[index] > AR[index + 1]:
         x = AR[index]
-        y = AR[index + 1]
-
-        AR[index] = y
+        AR[index] = AR[index + 1]
         AR[index + 1] = x
+
         flag = 1
     index += 1
     if index == (len(AR) - 1) and flag == 1:
@@ -25,6 +24,6 @@ while index < len(AR):
     if index == (len(AR) - 1) and flag == 0:
         break
 
-#    print(AR) #DEBUG
+    print(AR) #DEBUG
 
 print("Sorted array: {}".format(AR))

@@ -6,7 +6,7 @@ PRIMES = [2]
 
 #for x in range(3,10000,2)
 x = 3
-while x < 10000:
+while x < 1000000:
     no_remainder = False
     #for n in range(2,int(math.sqrt(x) + 1 )):
     i = 0
