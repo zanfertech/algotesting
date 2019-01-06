@@ -2,24 +2,27 @@
 
 import math
 
-PRIMES = [2]
+def main():
 
-#for x in range(3,10000,2)
-x = 3
-while x < 1000000:
-    no_remainder = False
-    #for n in range(2,int(math.sqrt(x) + 1 )):
-    i = 0
-    s = math.sqrt(x)
-    while PRIMES[i] <= s and i < len(PRIMES):
-        if (x % PRIMES[i]) == 0:
-            no_remainder = True
-            break
-        i += 1
-            #flag.append(n)
-    if not no_remainder:
-        #debug# print("{} is prime".format(x))
-        PRIMES.append(x)
-    x+=2
+    PRIMES = [2]
 
-print(PRIMES)
+    x = 3
+
+    while x < 1000:
+        ISPRIME = True
+        for n in range(3, int(math.sqrt(x) + 1)):
+            if x % n == 0:
+                ISPRIME = False
+                x += 2
+                break
+
+        if ISPRIME:
+            PRIMES.append(x)
+            x += 2
+
+    print(PRIMES)
+
+
+
+if __name__ == "__main__":
+    main()
