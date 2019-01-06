@@ -1,18 +1,25 @@
 #!/usr/bin/env python3.6
 
-PRIMES = []
+import math
 
-for x in range(2,10000):
-    flag = []
-    #for n in range(2,x):
-    for n in range(2,int((x/2)+1)):  ## Algo change cause a number can never be divisible by a number more than half it's value
-        #if x == n:
-        #    continue
-        if (x % n) == 0:  ## Used to be elif, because there was a chance x could == n
-            flag.append(n)
-#    if len(flag) == 0:
-    if not flag:
+PRIMES = [2]
+
+#for x in range(3,10000,2)
+x = 3
+while x < 1000000:
+    no_remainder = False
+    #for n in range(2,int(math.sqrt(x) + 1 )):
+    i = 0
+    s = math.sqrt(x)
+    while PRIMES[i] <= s and i < len(PRIMES):
+        if (x % PRIMES[i]) == 0:
+            no_remainder = True
+            break
+        i += 1
+            #flag.append(n)
+    if not no_remainder:
         #debug# print("{} is prime".format(x))
         PRIMES.append(x)
+    x+=2
 
 print(PRIMES)
