@@ -8,7 +8,7 @@ def main():
 
     x = 3
 
-    while x < 1000000:
+    while x < 10000000:
         ISPRIME = True
         for n in range(3, int(math.sqrt(x) + 1)):
             if x % n == 0:
