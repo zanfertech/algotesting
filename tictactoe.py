@@ -12,11 +12,6 @@ def main():
 
     player = choose_player()
 
-    if player == 1:
-        player = 'x'
-    elif player == 2:
-        player = 'o'
-
     complain = False
     counter = 1
     TTT = False
@@ -26,7 +21,7 @@ def main():
 
         if counter == 1:
             print("")
-            print(f"{player}'s starts the game")
+            print(f"{player.upper()}'s start the game")
             print("")
             print("")
 
@@ -120,6 +115,10 @@ def check_ttt(tx, ty, tz, player):
 
 def choose_player():
     player = random.randint(1,2)
+    if player == 1:
+        player = 'x'
+    elif player == 2:
+        player = 'o'
     return player
 
 if __name__ == "__main__":
