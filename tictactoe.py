@@ -21,7 +21,7 @@ def main():
 
         if counter == 1:
             print("")
-            print(f"{player.upper()}'s start the game")
+            print(f"{player}'s start the game")
             print("")
             print("")
 
@@ -65,17 +65,17 @@ def main():
         if TTT:
             status_check(tx, ty, tz)
             print("")
-            print(f"TicTacToe - {player.upper()} wins")
+            print(f"TicTacToe - {player} wins")
             print("")
             print("Game Over")
             print("Thanks for playing")
             break
         else:
-            if player == 'x':
-                player = 'o'
+            if player == 'X':
+                player = 'O'
                 counter += 1
-            elif player == 'o':
-                player = 'x'
+            elif player == 'O':
+                player = 'X'
                 counter += 1
 
         if counter > 9:
@@ -84,7 +84,7 @@ def main():
             exit()
 
 def legal_move(turn):
-    if turn == 'x' or turn == 'o':
+    if turn == 'X' or turn == 'O':
         return False
     else:
         return True
@@ -96,9 +96,11 @@ def status_check(tx, ty, tz):
         print("###############")
         print("Enter 0 to exit")
         print("")
-        print(tx)
-        print(ty)
-        print(tz)
+        print(*tx, sep=" | ")
+        print("--+---+--")
+        print(*ty, sep=" | ")
+        print("--+---+--")
+        print(*tz, sep=" | ")
         print("")
         print("")
 
@@ -116,9 +118,9 @@ def check_ttt(tx, ty, tz, player):
 def choose_player():
     player = random.randint(1,2)
     if player == 1:
-        player = 'x'
+        player = 'X'
     elif player == 2:
-        player = 'o'
+        player = 'O'
     return player
 
 if __name__ == "__main__":
