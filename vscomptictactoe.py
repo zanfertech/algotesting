@@ -184,8 +184,45 @@ def comp(x, y, z, xcounter):
     elif xcounter == 2:
         return random.randint(1, 9)
 
+    # Build comps personal mapping of board
+    survey = { 1 : z[0] , 2 : z[1] , 3 : z[2] ,
+            4 : y[0] , 5 : y[1] , 6 : y[2] ,
+            7 : x[0] , 8 : x[1] , 9 : x[2] }
 
+    xlist = []
+    olist = []
 
+    # Populate lists of x and o items
+    # For now its random so it could go in
+    # the same array but for future advancement
+    # We'll most likely need the lists separated
+    for k, v in survey.items():
+        if v == 'X':
+            xlist.append(k)
+    for k, v in survey.items():
+        if v == 'O':
+            olist.append(k)
+
+    # Combine the lists to a master list
+    mlist = xlist + olist
+
+    # A few operations needed to get a list
+    # of available numbers.  They create a
+    # dict which maps 1-9 to 0.  Then  maps
+    # it so keys match values.
+    avail = dict.fromkeys(range(1, 10), 0)
+    for n in range(1, 10):
+        avail[n] = n
+
+    # A final list of numbers is created by
+    # removing the numbers we gathered from
+    # survey.
+    for n in mlist:
+        avail.pop(n)
+
+    # A random number from avail numbers
+    # will be returned.
+    return (random.choice(list(avail)))
 
 
 if __name__ == "__main__":
