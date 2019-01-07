@@ -5,15 +5,19 @@ import os
 
 def main():
 
-    tx = ['7', '8', '9' ]
-    ty = ['4', '5', '6' ]
-    tz = ['1', '2', '3' ]
 #    status_check(tx, ty, tz)
+#    for x in ttt_reset():
+#        print(x[0])
+#        print(x[1])
+#        print(x[2])
+    tx = ttt_reset()[0]
+    ty = ttt_reset()[1]
+    tz = ttt_reset()[2]
+    counter = ttt_reset()[3]
 
     player = choose_player()
 
     complain = False
-    counter = 1
     TTT = False
     while not TTT:
         ## print(f"DEBUG - counter = {counter}")
@@ -67,9 +71,20 @@ def main():
             print("")
             print(f"TicTacToe - {player} wins")
             print("")
-            print("Game Over")
-            print("Thanks for playing")
-            break
+            if replay():
+                ttt_reset()
+                tx = ttt_reset()[0]
+                ty = ttt_reset()[1]
+                tz = ttt_reset()[2]
+                counter = ttt_reset()[3]
+                TTT = False
+                player = choose_player()
+                continue
+            else:
+                print("")
+                print("Game Over")
+                print("Thanks for playing")
+                break
         else:
             if player == 'X':
                 player = 'O'
@@ -81,13 +96,35 @@ def main():
         if counter > 9:
             status_check(tx, ty, tz)
             print("Tie Game")
-            exit()
+            if replay():
+                ttt_reset()
+                tx = ttt_reset()[0]
+                ty = ttt_reset()[1]
+                tz = ttt_reset()[2]
+                counter = ttt_reset()[3]
+                TTT = False
+                player = choose_player()
+                continue
+            else:
+                print("")
+                print("Game Over")
+                print("Thanks for playing")
+                break
 
 def legal_move(turn):
     if turn == 'X' or turn == 'O':
         return False
     else:
         return True
+
+def ttt_reset():
+
+    x = ['7', '8', '9' ]
+    y = ['4', '5', '6' ]
+    z = ['1', '2', '3' ]
+    xcounter = 1
+
+    return (x, y, z, xcounter)
 
 def status_check(tx, ty, tz):
         os.system('clear')
@@ -104,6 +141,16 @@ def status_check(tx, ty, tz):
         print("")
         print("")
 
+def replay():
+    ans = input("Would you like to play again? (y/n): ").lower()
+    if ans == 'y':
+        return True
+    elif ans == 'n':
+        return False
+    else:
+        print("invalid response")
+        replay()
+
 def check_ttt(tx, ty, tz, player):
 
     if tx[0] == tx[1] == tx[2] or ty[0] == ty[1] == ty[2] or tz[0] == tz[1] == tz[2]:
@@ -112,8 +159,12 @@ def check_ttt(tx, ty, tz, player):
         return player
     elif tx[0] == ty[1] == tz[2] or tx[2] == ty[1] == tz[0]:
         return player
-    else:
-        return 0
+    #else:
+    #    return 0
+    """
+    Removed need for ending game after one round
+    Implemented recursive play
+    """
 
 def choose_player():
     player = random.randint(1,2)
