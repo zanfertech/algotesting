@@ -215,7 +215,7 @@ def choose_player():
     return player
 
 def comp(x, y, z, xcounter):
-    time.sleep(2)
+    time.sleep(1)
     if xcounter == 1:
         return random.choice([7, 9, 5, 1, 3])
 
@@ -274,9 +274,9 @@ def comp(x, y, z, xcounter):
             # will be returned.
 
 
-    scan_rz = { 7 : survey[7], 8 : survey[8], 9 : survey[9] }
+    scan_rx = { 7 : survey[7], 8 : survey[8], 9 : survey[9] }
     scan_ry = { 4 : survey[4], 5 : survey[5], 6 : survey[6] }
-    scan_rx = { 1 : survey[1], 2 : survey[2], 3 : survey[3] }
+    scan_rz = { 1 : survey[1], 2 : survey[2], 3 : survey[3] }
 
     scan_19 = { 1 : survey[1], 5 : survey[5], 9 : survey[9]}
     scan_37 = { 3 : survey[3], 5 : survey[5], 7 : survey[7]}
@@ -290,15 +290,15 @@ def comp(x, y, z, xcounter):
     n19 = []
     n37 = []
 
-    if z.count('X') == 2:
-        for k,v in scan_rz.items():
+    if x.count('X') == 2:
+        for k,v in scan_rx.items():
             if v == 'X':
-                nrz.append(k)
-        if sum(nrz) == 15 and legal_move(z, 2):
+                nrx.append(k)
+        if sum(nrx) == 15 and legal_move(x, 2):
             return 9
-        if sum(nrz) == 16 and legal_move(z, 1):
+        if sum(nrx) == 16 and legal_move(x, 1):
             return 8
-        if sum(nrz) == 17 and legal_move(z, 0):
+        if sum(nrx) == 17 and legal_move(x, 0):
             return 7
 
     if y.count('X') == 2:
@@ -312,15 +312,15 @@ def comp(x, y, z, xcounter):
         if sum(nry) == 10 and legal_move(y, 1):
             return 5 ## Probably unnecessary so last
 
-    if x.count('X') == 2:
-        for k,v in scan_rx.items():
+    if z.count('X') == 2:
+        for k,v in scan_rz.items():
             if v == 'X':
-                nrx.append(k)
-        if sum(nrx) == 3 and legal_move(x, 2):
+                nrz.append(k)
+        if sum(nrz) == 3 and legal_move(z, 2):
             return 3
-        if sum(nrx) == 4 and legal_move(x, 1):
+        if sum(nrz) == 4 and legal_move(z, 1):
             return 2
-        if sum(nrx) == 5 and legal_move(x, 0):
+        if sum(nrz) == 5 and legal_move(z, 0):
             return 1
 
     if one.count('X') == 2:
