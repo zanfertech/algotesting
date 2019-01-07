@@ -287,15 +287,52 @@ def comp(x, y, z, xcounter):
     n19 = []
     n37 = []
 
+    if z.count('X') == 2:
+        for k,v in scan_rz:
+            if v == 'X':
+                nrz.append(k)
+        if sum(nrz) == 15 and legal_move(z, 9):
+            return 9
+        if sum(nrz) == 16 and legal_move(z, 8):
+            return 8
+        if sum(nrz) == 17 and legal_move(z, 7):
+            return 7
+
+    if y.count('X') == 2:
+        for k,v in scan_ry:
+            if v == 'X':
+                nry.append(k)
+        if sum(nry) == 9 and legal_move(y, 6):
+            return 6
+        if sum(nry) == 11 and legal_move(y, 4):
+            return 4
+        if sum(nry) == 10 and legal_move(y, 5):
+            return 5 ## Probably unnecessary so last
+
     if x.count('X') == 2:
         for k,v in scan_rx:
             if v == 'X':
                 nrx.append(k)
         if sum(nrx) == 3 and legal_move(x, 3):
             return 3
+        if sum(nrx) == 4 and legal_move(x, 2):
+            return 2
+        if sum(nrx) == 5 and legal_move(x, 1):
+            return 1
 
 
 
+    scan_c1 = { 7 : survey[7], 4 : survey[4], 1 : survey[1] }
+    scan_c2 = { 8 : survey[8], 5 : survey[5], 2 : survey[2] }
+    scan_c3 = { 9 : survey[9], 6 : survey[6], 3 : survey[3] }
+
+
+    nc1 = []
+    nc2 = []
+    nc3 = []
+
+    if z.count('X') == 2:
+        for k,v in scan_rz:
 
 
 
