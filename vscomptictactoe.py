@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.6
 
+import time
 import random
 import os
 
@@ -36,6 +37,7 @@ def main():
         if player == 'X':
             turn = input(f"Selection for {player}: ")
         else:
+            print("Selection for Computer")
             turn = comp(tx, ty, tz, counter)
 
         try:
@@ -179,10 +181,14 @@ def choose_player():
     return player
 
 def comp(x, y, z, xcounter):
+    time.sleep(2)
     if xcounter == 1:
         return random.choice([7, 9, 5, 1, 3])
-    elif xcounter == 2:
-        return random.randint(1, 9)
+    if xcounter == 2:
+        if legal_move(5):
+            return 5
+
+    # After 3rd move, all hell breaks loose
 
     # Build comps personal mapping of board
     survey = { 1 : z[0] , 2 : z[1] , 3 : z[2] ,
