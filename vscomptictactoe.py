@@ -11,6 +11,13 @@ def main():
 #        print(x[0])
 #        print(x[1])
 #        print(x[2])
+    banner()
+    mode = input("Single Player - Press 1\nMulti Player - Press 2\n\n:")
+    if mode == '1':
+        mode = 'single'
+    elif mode == '2':
+        mode = 'multi'
+
     tx = ttt_reset()[0]
     ty = ttt_reset()[1]
     tz = ttt_reset()[2]
@@ -18,10 +25,11 @@ def main():
 
     player = choose_player()
 
+
     complain = False
     TTT = False
     while not TTT:
-        ## print(f"DEBUG - counter = {counter}")
+        print(f"DEBUG - counter = {counter}")
         status_check(tx, ty, tz)
 
         if counter == 1:
@@ -34,11 +42,16 @@ def main():
             print("Invalid key - Please try again")
             complain = False
 
-        if player == 'X':
+        if mode == 'multi':
             turn = input(f"Selection for {player}: ")
-        else:
-            print("Selection for Computer")
-            turn = comp(tx, ty, tz, counter)
+        elif mode == 'single':
+            if player == 'X':
+                turn = input(f"Selection for {player}: ")
+            else:
+                print("Selection for Computer")
+                turn = comp(tx, ty, tz, counter)
+                print(f"Computer selected {turn}")
+                time.sleep(1)
 
         try:
             turn = int(turn)
@@ -132,12 +145,16 @@ def ttt_reset():
 
     return (x, y, z, xcounter)
 
-def status_check(tx, ty, tz):
-        os.system('clear')
+def banner():
         print("###############")
         print("## TicTacToe ##")
         print("###############")
         print("Enter 0 to exit")
+        print("")
+
+def status_check(tx, ty, tz):
+        os.system('clear')
+        banner()
         print("")
         print(*tx, sep=" | ")
         print("--+---+--")
@@ -184,9 +201,6 @@ def comp(x, y, z, xcounter):
     time.sleep(2)
     if xcounter == 1:
         return random.choice([7, 9, 5, 1, 3])
-    if xcounter == 2:
-        if legal_move(5):
-            return 5
 
     # After 3rd move, all hell breaks loose
 
@@ -223,11 +237,22 @@ def comp(x, y, z, xcounter):
     # A final list of numbers is created by
     # removing the numbers we gathered from
     # survey.
+    # Also making copy before making changes
+    ttt_map = avail
     for n in mlist:
         avail.pop(n)
 
-    # A random number from avail numbers
-    # will be returned.
+
+    if xcounter >= 2 and xcounter <= 5:
+        optimal_n = random.choice([7, 9, 5, 1, 3])
+#        print(f"opt num selected is {optimal_n}")
+        #while not legal_move(ttt_map[optimal_n]):
+        #    print(f"{optimal_n} was rejected")
+        #    optimal_n = random.choice([7, 9, 5, 1, 3])
+        if optimal_n in list(avail):
+            return optimal_n
+            # A random number from avail numbers
+            # will be returned.
     return (random.choice(list(avail)))
 
 
