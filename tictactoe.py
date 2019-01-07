@@ -34,7 +34,13 @@ def main():
             print("Invalid key - Please try again")
             complain = False
 
-        turn = int(input(f"Selection for {player}: "))
+        turn = input(f"Selection for {player}: ")
+        try:
+            turn = int(turn)
+        except:
+            complain = True
+            continue
+
         if turn == 1 and legal_move(tx[0]):
             tx[0] = player
         elif turn == 2 and legal_move(tx[1]):
@@ -56,9 +62,6 @@ def main():
         elif turn == 0:
             print("Exiting")
             break
-        elif turn == type(str):
-            complain = True
-            continue
         else:
             complain = True
             continue
