@@ -8,7 +8,7 @@ def main():
     tx = ['1', '2', '3' ]
     ty = ['4', '5', '6' ]
     tz = ['7', '8', '9' ]
-    status_check(tx, ty, tz)
+#    status_check(tx, ty, tz)
 
     player = choose_player()
 
@@ -17,17 +17,18 @@ def main():
     elif player == 2:
         player = 'o'
 
-    print("")
-    print(f"{player}'s starts the game")
-    print("")
-    print("")
-
     complain = False
     counter = 1
     TTT = False
     while not TTT:
         ## print(f"DEBUG - counter = {counter}")
         status_check(tx, ty, tz)
+
+        if counter == 1:
+            print("")
+            print(f"{player}'s starts the game")
+            print("")
+            print("")
 
         if complain == True:
             print("Invalid key - Please try again")
@@ -55,6 +56,9 @@ def main():
         elif turn == 0:
             print("Exiting")
             break
+        elif turn == type(str):
+            complain = True
+            continue
         else:
             complain = True
             continue
@@ -62,7 +66,9 @@ def main():
         TTT = check_ttt(tx, ty, tz, player)
         if TTT:
             status_check(tx, ty, tz)
-            print(f"TicTacToe - {player} wins")
+            print("")
+            print(f"TicTacToe - {player.upper()} wins")
+            print("")
             print("Game Over")
             print("Thanks for playing")
             break
@@ -87,7 +93,9 @@ def legal_move(turn):
 
 def status_check(tx, ty, tz):
         os.system('clear')
-        print("==TicTacToe==")
+        print("###############")
+        print("## TicTacToe ##")
+        print("###############")
         print("Enter 0 to exit")
         print("")
         print(tx)
