@@ -298,7 +298,7 @@ def comp(x, y, z, xcounter):
     nc2 = []
     nc3 = []
 
-
+    ## Offensive trategy
     if x.count('O') == 2:
         for k,v in scan_rx.items():
             if v == 'O':
@@ -388,8 +388,7 @@ def comp(x, y, z, xcounter):
             return 9
 
 
-
-
+    ## Defensive strategy
     if x.count('X') == 2:
         for k,v in scan_rx.items():
             if v == 'X':
