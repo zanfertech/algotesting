@@ -13,11 +13,24 @@ def main():
 #        print(x[2])
     os.system('clear')
     banner()
-    mode = input("Single Player - Press 1\nMulti Player - Press 2\n\n:")
-    if mode == '1':
-        mode = 'single'
-    elif mode == '2':
-        mode = 'multi'
+    mode = 3
+    while mode < 1 or mode > 2:
+        mode = input("Single Player - Press 1\nMulti Player - Press 2\n\n:")
+        try:
+            mode = int(mode)
+        except:
+            print("Invalid key - Please try again")
+            continue
+        if mode == 1:
+            mode = 'single'
+            break
+        elif mode == 2:
+            mode = 'multi'
+            break
+        elif mode == 0:
+            exit()
+        else:
+            print("Invalid key - Please try again")
 
     tx = ttt_reset()[0]
     ty = ttt_reset()[1]
@@ -60,26 +73,27 @@ def main():
             complain = True
             continue
 
-        if turn == 1 and legal_move(tz[0]):
+        if turn == 1 and legal_move(tz, 0):
             tz[0] = player
-        elif turn == 2 and legal_move(tz[1]):
+        elif turn == 2 and legal_move(tz, 1):
             tz[1] = player
-        elif turn == 3 and legal_move(tz[2]):
+        elif turn == 3 and legal_move(tz, 2):
             tz[2] = player
-        elif turn == 4 and legal_move(ty[0]):
+        elif turn == 4 and legal_move(ty, 0):
             ty[0] = player
-        elif turn == 5 and legal_move(ty[1]):
+        elif turn == 5 and legal_move(ty, 1):
             ty[1] = player
-        elif turn == 6 and legal_move(ty[2]):
+        elif turn == 6 and legal_move(ty, 2):
             ty[2] = player
-        elif turn == 7 and legal_move(tx[0]):
+        elif turn == 7 and legal_move(tx, 0):
             tx[0] = player
-        elif turn == 8 and legal_move(tx[1]):
+        elif turn == 8 and legal_move(tx, 1):
             tx[1] = player
-        elif turn == 9 and legal_move(tx[2]):
+        elif turn == 9 and legal_move(tx, 2):
             tx[2] = player
         elif turn == 0:
             print("Exiting")
+            bye_felicia()
             break
         else:
             complain = True
@@ -101,9 +115,7 @@ def main():
                 player = choose_player()
                 continue
             else:
-                print("")
-                print("Game Over")
-                print("Thanks for playing")
+                bye_felicia()
                 break
         else:
             if player == 'X':
@@ -127,13 +139,16 @@ def main():
                 player = choose_player()
                 continue
             else:
-                print("")
-                print("Game Over")
-                print("Thanks for playing")
+                bye_felicia()
                 break
 
-def legal_move(turn):
-    if turn == 'X' or turn == 'O':
+def bye_felicia():
+    print("")
+    print("Game Over")
+    print("Thanks for playing")
+
+def legal_move(t, turn):
+    if t[turn] == 'X' or t[turn] == 'O':
         return False
     else:
         return True
@@ -245,7 +260,7 @@ def comp(x, y, z, xcounter):
         avail.pop(n)
 
 
-    if xcounter >= 2 and xcounter <= 5:
+    if xcounter == 2 or xcounter == 3:
         optimal_n = random.choice([7, 9, 5, 1, 3])
 #        print(f"opt num selected is {optimal_n}")
         #while not legal_move(ttt_map[optimal_n]):
@@ -257,6 +272,33 @@ def comp(x, y, z, xcounter):
             return optimal_n
             # A random number from avail numbers
             # will be returned.
+
+
+    scan_rz = { 7 : survey[7], 8 : survey[8], 9 : survey[9] }
+    scan_ry = { 4 : survey[4], 5 : survey[5], 6 : survey[6] }
+    scan_rx = { 1 : survey[1], 2 : survey[2], 3 : survey[3] }
+
+    scan_19 = { 1 : survey[1], 5 : survey[5], 9 : survey[9]}
+    scan_37 = { 3 : survey[3], 5 : survey[5], 7 : survey[7]}
+
+    nrz = []
+    nry = []
+    nrx = []
+    n19 = []
+    n37 = []
+
+    if x.count('X') == 2:
+        for k,v in scan_rx:
+            if v == 'X':
+                nrx.append(k)
+        if sum(nrx) == 3 and legal_move(x, 3):
+            return 3
+
+
+
+
+
+
     return (random.choice(list(avail)))
 
 
