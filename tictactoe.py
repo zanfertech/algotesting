@@ -11,6 +11,7 @@ def main():
 #        print(x[0])
 #        print(x[1])
 #        print(x[2])
+    os.system('clear')
     banner()
     mode = input("Single Player - Press 1\nMulti Player - Press 2\n\n:")
     if mode == '1':
@@ -115,6 +116,7 @@ def main():
         if counter > 9:
             status_check(tx, ty, tz)
             print("Tie Game")
+            print("")
             if replay():
                 ttt_reset()
                 tx = ttt_reset()[0]
@@ -249,6 +251,8 @@ def comp(x, y, z, xcounter):
         #while not legal_move(ttt_map[optimal_n]):
         #    print(f"{optimal_n} was rejected")
         #    optimal_n = random.choice([7, 9, 5, 1, 3])
+        if 5 in list(avail):
+            return 5
         if optimal_n in list(avail):
             return optimal_n
             # A random number from avail numbers
