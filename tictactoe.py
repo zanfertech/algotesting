@@ -267,9 +267,10 @@ def comp(x, y, z, xcounter):
         #while not legal_move(ttt_map[optimal_n]):
         #    print(f"{optimal_n} was rejected")
         #    optimal_n = random.choice([7, 9, 5, 1, 3])
-        if 5 in list(avail):
-            return 5
-        if optimal_n in list(avail):
+        if 7 in xlist or 9 in xlist or 1 in xlist or 3 in xlist:
+            if 5 in list(avail):
+                return 5
+        elif optimal_n in list(avail):
             return optimal_n
             # A random number from avail numbers
             # will be returned.
@@ -284,12 +285,110 @@ def comp(x, y, z, xcounter):
 
     one = list(scan_19.values())
     three = list(scan_37.values())
-
     nrz = []
     nry = []
     nrx = []
     n19 = []
     n37 = []
+
+    scan_c1 = { 7 : survey[7], 4 : survey[4], 1 : survey[1] }
+    scan_c2 = { 8 : survey[8], 5 : survey[5], 2 : survey[2] }
+    scan_c3 = { 9 : survey[9], 6 : survey[6], 3 : survey[3] }
+    nc1 = []
+    nc2 = []
+    nc3 = []
+
+
+    if x.count('O') == 2:
+        for k,v in scan_rx.items():
+            if v == 'O':
+                nrx.append(k)
+        if sum(nrx) == 15 and legal_move(x, 2):
+            return 9
+        if sum(nrx) == 16 and legal_move(x, 1):
+            return 8
+        if sum(nrx) == 17 and legal_move(x, 0):
+            return 7
+
+    if y.count('O') == 2:
+        for k,v in scan_ry.items():
+            if v == 'O':
+                nry.append(k)
+        if sum(nry) == 9 and legal_move(y, 2):
+            return 6
+        if sum(nry) == 10 and legal_move(y, 1):
+            return 5
+        if sum(nry) == 11 and legal_move(y, 0):
+            return 4
+
+    if z.count('O') == 2:
+        for k,v in scan_rz.items():
+            if v == 'O':
+                nrz.append(k)
+        if sum(nrz) == 3 and legal_move(z, 2):
+            return 3
+        if sum(nrz) == 4 and legal_move(z, 1):
+            return 2
+        if sum(nrz) == 5 and legal_move(z, 0):
+            return 1
+
+    if one.count('O') == 2:
+        for k,v in scan_19.items():
+            if v == 'O':
+                n19.append(k)
+        if sum(n19) == 6 and legal_move(list(one), 2):
+            return 9
+        if sum(n19) == 10 and legal_move(list(one), 1):
+            return 5
+        if sum(n19) == 14 and legal_move(list(one), 0):
+            return 1
+
+    if three.count('O') == 2:
+        for k,v in scan_37.items():
+            if v == 'O':
+                n37.append(k)
+        if sum(n37) == 8 and legal_move(list(one), 2):
+            return 7
+        if sum(n37) == 10 and legal_move(list(one), 1):
+            return 5
+        if sum(n37) == 12 and legal_move(list(one), 0):
+            return 3
+
+    if list(scan_c1.values()).count('O') == 2:
+        for k,v in scan_c1.items():
+            if v == 'O':
+                nc1.append(k)
+        if sum(nc1) == 11 and legal_move(list(scan_c1), 2):
+            return 1
+        if sum(nc1) == 8 and legal_move(list(scan_c1), 1):
+            return 4
+        if sum(nc1) == 5 and legal_move(list(scan_c1), 0):
+            return 7
+
+    if list(scan_c2.values()).count('O') == 2:
+        for k,v in scan_c2.items():
+            if v == 'O':
+                nc2.append(k)
+        if sum(nc2) == 13 and legal_move(list(scan_c2), 2):
+            return 2
+        if sum(nc2) == 10 and legal_move(list(scan_c2), 1):
+            return 5
+        if sum(nc2) == 7 and legal_move(list(scan_c2), 0):
+            return 8
+
+    if list(scan_c3.values()).count('O') == 2:
+        for k,v in scan_c3.items():
+            if v == 'O':
+                nc3.append(k)
+        if sum(nc3) == 15 and legal_move(list(scan_c3), 2):
+            return 3
+        if sum(nc3) == 12 and legal_move(list(scan_c3), 1):
+            return 6
+        if sum(nc3) == 9 and legal_move(list(scan_c3), 0):
+            return 9
+
+
+
 
     if x.count('X') == 2:
         for k,v in scan_rx.items():
@@ -346,14 +445,6 @@ def comp(x, y, z, xcounter):
         if sum(n19) == 10 and legal_move(list(one), 1):
             return 5 ## Probably unnecessary so last
 
-    scan_c1 = { 7 : survey[7], 4 : survey[4], 1 : survey[1] }
-    scan_c2 = { 8 : survey[8], 5 : survey[5], 2 : survey[2] }
-    scan_c3 = { 9 : survey[9], 6 : survey[6], 3 : survey[3] }
-
-
-    nc1 = []
-    nc2 = []
-    nc3 = []
     if list(scan_c1.values()).count('X') == 2:
         for k,v in scan_c1.items():
             if v == 'X':
