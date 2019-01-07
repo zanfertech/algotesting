@@ -6,11 +6,6 @@ import os
 
 def main():
 
-#    status_check(tx, ty, tz)
-#    for x in ttt_reset():
-#        print(x[0])
-#        print(x[1])
-#        print(x[2])
     os.system('clear')
     banner()
     mode = 3
@@ -215,11 +210,17 @@ def choose_player():
     return player
 
 def comp(x, y, z, xcounter):
+    """
+    AI functionality introduced
+    """
+
     time.sleep(1)
     if xcounter == 1:
         return random.choice([7, 9, 5, 1, 3])
 
-    # After 3rd move, all hell breaks loose
+    # First and second moves are randomized
+    # with priority squares.
+    # After 3rd move, all hell breaks loose, hahah
 
     # Build comps personal mapping of board
     survey = { 1 : z[0] , 2 : z[1] , 3 : z[2] ,
