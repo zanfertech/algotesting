@@ -7,6 +7,7 @@ def main():
     tx = ['1', '2', '3' ]
     ty = ['4', '5', '6' ]
     tz = ['7', '8', '9' ]
+    status_check(tx, ty, tz)
 
     player = choose_player()
 
@@ -15,31 +16,35 @@ def main():
     elif player == 2:
         player = 'o'
 
-    print(f"{player} starts the game")
+    print("")
+    print(f"{player}'s starts the game")
+    print("")
+    print("")
 
+    counter = 1
     TTT = False
     while not TTT:
-        print(tx)
-        print(ty)
-        print(tz)
+        ## print(f"DEBUG - counter = {counter}")
+        status_check(tx, ty, tz)
+
         turn = int(input(f"Selection for {player}: "))
-        if turn == 1:
+        if turn == 1 and legal_move(tx[0]):
             tx[0] = player
-        elif turn == 2:
+        elif turn == 2 and legal_move(tx[1]):
             tx[1] = player
-        elif turn == 3:
+        elif turn == 3 and legal_move(tx[2]):
             tx[2] = player
-        elif turn == 4:
+        elif turn == 4 and legal_move(ty[0]):
             ty[0] = player
-        elif turn == 5:
+        elif turn == 5 and legal_move(ty[1]):
             ty[1] = player
-        elif turn == 6:
+        elif turn == 6 and legal_move(ty[2]):
             ty[2] = player
-        elif turn == 7:
+        elif turn == 7 and legal_move(tz[0]):
             tz[0] = player
-        elif turn == 8:
+        elif turn == 8 and legal_move(tz[1]):
             tz[1] = player
-        elif turn == 9:
+        elif turn == 9 and legal_move(tz[2]):
             tz[2] = player
         elif turn == 0:
             print("Exiting")
@@ -50,6 +55,7 @@ def main():
 
         TTT = check_ttt(tx, ty, tz, player)
         if TTT:
+            status_check(tx, ty, tz)
             print(f"TicTacToe - {player} wins")
             print("Game Over")
             print("Thanks for playing")
@@ -57,8 +63,29 @@ def main():
         else:
             if player == 'x':
                 player = 'o'
+                counter += 1
             elif player == 'o':
                 player = 'x'
+                counter += 1
+
+        if counter > 9:
+            status_check(tx, ty, tz)
+            print("Tie Game")
+            exit()
+
+def legal_move(turn):
+    if turn == 'x' or turn == 'o':
+        return False
+    else:
+        return True
+
+def status_check(tx, ty, tz):
+        print("")
+        print(tx)
+        print(ty)
+        print(tz)
+        print("")
+        print("")
 
 def check_ttt(tx, ty, tz, player):
 
