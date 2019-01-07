@@ -33,7 +33,11 @@ def main():
             print("Invalid key - Please try again")
             complain = False
 
-        turn = input(f"Selection for {player}: ")
+        if player == 'X':
+            turn = input(f"Selection for {player}: ")
+        else:
+            turn = comp(tx, ty, tz, counter)
+
         try:
             turn = int(turn)
         except:
@@ -173,6 +177,16 @@ def choose_player():
     elif player == 2:
         player = 'O'
     return player
+
+def comp(x, y, z, xcounter):
+    if xcounter == 1:
+        return random.choice([7, 9, 5, 1, 3])
+    elif xcounter == 2:
+        return random.randint(1, 9)
+
+
+
+
 
 if __name__ == "__main__":
     main()
