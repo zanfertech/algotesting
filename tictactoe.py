@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.6
 
 import random
+import os
 
 def main():
 
@@ -21,11 +22,16 @@ def main():
     print("")
     print("")
 
+    complain = False
     counter = 1
     TTT = False
     while not TTT:
         ## print(f"DEBUG - counter = {counter}")
         status_check(tx, ty, tz)
+
+        if complain == True:
+            print("Invalid key - Please try again")
+            complain = False
 
         turn = int(input(f"Selection for {player}: "))
         if turn == 1 and legal_move(tx[0]):
@@ -50,7 +56,7 @@ def main():
             print("Exiting")
             break
         else:
-            print("Invalid key - Please try again")
+            complain = True
             continue
 
         TTT = check_ttt(tx, ty, tz, player)
@@ -80,6 +86,9 @@ def legal_move(turn):
         return True
 
 def status_check(tx, ty, tz):
+        os.system('clear')
+        print("==TicTacToe==")
+        print("Enter 0 to exit")
         print("")
         print(tx)
         print(ty)
