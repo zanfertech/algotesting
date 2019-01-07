@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.6
 
 AR = (3, 89, 222, 5867, 34566, 7456, 1000, 465, 38, 22, 5)
 

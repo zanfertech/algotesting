@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.6
 
 AR = [5, 1, 14, 9, 6, 19, 17, 2 ,7, 4, 12, 15, 3, 11, 10, 8 ]
 

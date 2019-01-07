@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.6
 
 def main():
     info = { "f_n" : "Zanfer", "l_n" : "Ali", "age" : 35, "birthdate" : "1/5/1984"}
