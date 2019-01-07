@@ -5,9 +5,9 @@ import os
 
 def main():
 
-    tx = ['1', '2', '3' ]
+    tx = ['7', '8', '9' ]
     ty = ['4', '5', '6' ]
-    tz = ['7', '8', '9' ]
+    tz = ['1', '2', '3' ]
 #    status_check(tx, ty, tz)
 
     player = choose_player()
@@ -36,24 +36,24 @@ def main():
             complain = True
             continue
 
-        if turn == 1 and legal_move(tx[0]):
-            tx[0] = player
-        elif turn == 2 and legal_move(tx[1]):
-            tx[1] = player
-        elif turn == 3 and legal_move(tx[2]):
-            tx[2] = player
+        if turn == 1 and legal_move(tz[0]):
+            tz[0] = player
+        elif turn == 2 and legal_move(tz[1]):
+            tz[1] = player
+        elif turn == 3 and legal_move(tz[2]):
+            tz[2] = player
         elif turn == 4 and legal_move(ty[0]):
             ty[0] = player
         elif turn == 5 and legal_move(ty[1]):
             ty[1] = player
         elif turn == 6 and legal_move(ty[2]):
             ty[2] = player
-        elif turn == 7 and legal_move(tz[0]):
-            tz[0] = player
-        elif turn == 8 and legal_move(tz[1]):
-            tz[1] = player
-        elif turn == 9 and legal_move(tz[2]):
-            tz[2] = player
+        elif turn == 7 and legal_move(tx[0]):
+            tx[0] = player
+        elif turn == 8 and legal_move(tx[1]):
+            tx[1] = player
+        elif turn == 9 and legal_move(tx[2]):
+            tx[2] = player
         elif turn == 0:
             print("Exiting")
             break
