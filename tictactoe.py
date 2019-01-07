@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.6
 
+import time
 import random
 import os
 
@@ -10,6 +11,13 @@ def main():
 #        print(x[0])
 #        print(x[1])
 #        print(x[2])
+    banner()
+    mode = input("Single Player - Press 1\nMulti Player - Press 2\n\n:")
+    if mode == '1':
+        mode = 'single'
+    elif mode == '2':
+        mode = 'multi'
+
     tx = ttt_reset()[0]
     ty = ttt_reset()[1]
     tz = ttt_reset()[2]
@@ -17,10 +25,11 @@ def main():
 
     player = choose_player()
 
+
     complain = False
     TTT = False
     while not TTT:
-        ## print(f"DEBUG - counter = {counter}")
+        print(f"DEBUG - counter = {counter}")
         status_check(tx, ty, tz)
 
         if counter == 1:
@@ -33,7 +42,17 @@ def main():
             print("Invalid key - Please try again")
             complain = False
 
-        turn = input(f"Selection for {player}: ")
+        if mode == 'multi':
+            turn = input(f"Selection for {player}: ")
+        elif mode == 'single':
+            if player == 'X':
+                turn = input(f"Selection for {player}: ")
+            else:
+                print("Selection for Computer")
+                turn = comp(tx, ty, tz, counter)
+                print(f"Computer selected {turn}")
+                time.sleep(1)
+
         try:
             turn = int(turn)
         except:
@@ -126,12 +145,16 @@ def ttt_reset():
 
     return (x, y, z, xcounter)
 
-def status_check(tx, ty, tz):
-        os.system('clear')
+def banner():
         print("###############")
         print("## TicTacToe ##")
         print("###############")
         print("Enter 0 to exit")
+        print("")
+
+def status_check(tx, ty, tz):
+        os.system('clear')
+        banner()
         print("")
         print(*tx, sep=" | ")
         print("--+---+--")
@@ -173,6 +196,65 @@ def choose_player():
     elif player == 2:
         player = 'O'
     return player
+
+def comp(x, y, z, xcounter):
+    time.sleep(2)
+    if xcounter == 1:
+        return random.choice([7, 9, 5, 1, 3])
+
+    # After 3rd move, all hell breaks loose
+
+    # Build comps personal mapping of board
+    survey = { 1 : z[0] , 2 : z[1] , 3 : z[2] ,
+            4 : y[0] , 5 : y[1] , 6 : y[2] ,
+            7 : x[0] , 8 : x[1] , 9 : x[2] }
+
+    xlist = []
+    olist = []
+
+    # Populate lists of x and o items
+    # For now its random so it could go in
+    # the same array but for future advancement
+    # We'll most likely need the lists separated
+    for k, v in survey.items():
+        if v == 'X':
+            xlist.append(k)
+    for k, v in survey.items():
+        if v == 'O':
+            olist.append(k)
+
+    # Combine the lists to a master list
+    mlist = xlist + olist
+
+    # A few operations needed to get a list
+    # of available numbers.  They create a
+    # dict which maps 1-9 to 0.  Then  maps
+    # it so keys match values.
+    avail = dict.fromkeys(range(1, 10), 0)
+    for n in range(1, 10):
+        avail[n] = n
+
+    # A final list of numbers is created by
+    # removing the numbers we gathered from
+    # survey.
+    # Also making copy before making changes
+    ttt_map = avail
+    for n in mlist:
+        avail.pop(n)
+
+
+    if xcounter >= 2 and xcounter <= 5:
+        optimal_n = random.choice([7, 9, 5, 1, 3])
+#        print(f"opt num selected is {optimal_n}")
+        #while not legal_move(ttt_map[optimal_n]):
+        #    print(f"{optimal_n} was rejected")
+        #    optimal_n = random.choice([7, 9, 5, 1, 3])
+        if optimal_n in list(avail):
+            return optimal_n
+            # A random number from avail numbers
+            # will be returned.
+    return (random.choice(list(avail)))
+
 
 if __name__ == "__main__":
     main()
