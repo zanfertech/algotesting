@@ -279,10 +279,6 @@ def comp(x, y, z, xcounter):
     scan_rx = { 7 : survey[7], 8 : survey[8], 9 : survey[9] }
     scan_ry = { 4 : survey[4], 5 : survey[5], 6 : survey[6] }
     scan_rz = { 1 : survey[1], 2 : survey[2], 3 : survey[3] }
-    print(f"DEBUG: list of scan_rx values is {list(scan_rx.values())}")
-    print(f"DEBUG: list of scan_ry values is {list(scan_ry.values())}")
-    print(f"DEBUG: list of scan_rz values is {list(scan_rz.values())}")
-    time.sleep(3)
 
     scan_lrx = list(scan_rx.values())
     scan_lry = list(scan_ry.values())
