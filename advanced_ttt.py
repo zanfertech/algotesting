@@ -214,6 +214,19 @@ def choose_player():
         player = 'O'
     return player
 
+def best_chance(survey, xcounter):
+    """
+    Best chance to win, based on all possible
+    variations
+    """
+    if DEBUG:
+        print(f"counter at {xcounter}")
+        print(f"lenth of survey {len(survey}")
+        print(f"contents of survey {survey}")
+
+    if xcounter == 1:
+        for x in range(0, len(survey))
+
 
 
 def cortex(x, y, z, xcounter):
@@ -221,11 +234,18 @@ def cortex(x, y, z, xcounter):
     Advance calculations in order to determine
     best possible move.
     """
-    if xcounter == 1:
+
+    ## Construct grid
+
+    survey = { 1 : z[0] , 2 : z[1] , 3 : z[2] ,
+            4 : y[0] , 5 : y[1] , 6 : y[2] ,
+            7 : x[0] , 8 : x[1] , 9 : x[2] }
+
+
         #here we go
-        
-        
-    
+    best_chance(survey, xcounter)
+
+
 
 
 
