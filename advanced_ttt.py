@@ -6,6 +6,7 @@ import os
 
 def main():
 
+"""
     banner()
     mode = 3
     while mode < 1 or mode > 2:
@@ -135,6 +136,7 @@ def main():
             else:
                 bye_felicia()
                 break
+    """
 
 def bye_felicia():
     print("")
