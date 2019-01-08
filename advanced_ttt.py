@@ -5,10 +5,13 @@ import random
 import os
 
 def main():
+    print("start")
     tx = ttt_reset()[0]
     ty = ttt_reset()[1]
     tz = ttt_reset()[2]
     counter = ttt_reset()[3]
+
+    cortex(tx, ty, tz, counter)
 
 """
     banner()
@@ -219,14 +222,20 @@ def best_chance(survey, xcounter):
     Best chance to win, based on all possible
     variations
     """
+    DEBUG = True
+
     if DEBUG:
         print(f"counter at {xcounter}")
-        print(f"lenth of survey {len(survey}")
+        print(f"lenth of survey {len(survey)}")
         print(f"contents of survey {survey}")
 
-    if xcounter == 1:
-        for x in range(0, len(survey))
 
+    if xcounter == 1:
+        for xpos in range(0, len(survey)):
+            for oppos in range(0, len(survey)):
+                if DEBUG:
+                    print(f"xpos at {xpos}")
+                    print(f"oppos at {oppos}")
 
 
 def cortex(x, y, z, xcounter):
@@ -252,10 +261,10 @@ def cortex(x, y, z, xcounter):
 
 
 
-"""
+    """
 def comp(x, y, z, xcounter):
     """
-    AI functionality introduced
+    ## AI functionality introduced
     """
 
     time.sleep(1)
@@ -533,7 +542,7 @@ def comp(x, y, z, xcounter):
 
 
     return (random.choice(list(avail)))
-"""
+    """
 
 if __name__ == "__main__":
     main()
