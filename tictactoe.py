@@ -299,37 +299,37 @@ def comp(x, y, z, xcounter):
     nc3 = []
 
     ## Offensive trategy
-    if x.count('O') == 2:
+    if list(scan_rx).count('O') == 2:
         for k,v in scan_rx.items():
             if v == 'O':
                 nrx.append(k)
-        if sum(nrx) == 15 and legal_move(x, 2):
+        if sum(nrx) == 15 and legal_move(list(scan_rx), 2):
             return 9
-        if sum(nrx) == 16 and legal_move(x, 1):
+        if sum(nrx) == 16 and legal_move(list(scan_rx), 1):
             return 8
-        if sum(nrx) == 17 and legal_move(x, 0):
+        if sum(nrx) == 17 and legal_move(list(scan_rx), 0):
             return 7
 
-    if y.count('O') == 2:
+    if list(scan_ry).count('O') == 2:
         for k,v in scan_ry.items():
             if v == 'O':
                 nry.append(k)
-        if sum(nry) == 9 and legal_move(y, 2):
+        if sum(nry) == 9 and legal_move(list(scan_ry), 2):
             return 6
-        if sum(nry) == 10 and legal_move(y, 1):
+        if sum(nry) == 10 and legal_move(list(scan_ry), 1):
             return 5
-        if sum(nry) == 11 and legal_move(y, 0):
+        if sum(nry) == 11 and legal_move(list(scan_ry), 0):
             return 4
 
-    if z.count('O') == 2:
+    if list(scan_rz).count('O') == 2:
         for k,v in scan_rz.items():
             if v == 'O':
                 nrz.append(k)
-        if sum(nrz) == 3 and legal_move(z, 2):
+        if sum(nrz) == 3 and legal_move(list(scan_rz), 2):
             return 3
-        if sum(nrz) == 4 and legal_move(z, 1):
+        if sum(nrz) == 4 and legal_move(list(scan_rz), 1):
             return 2
-        if sum(nrz) == 5 and legal_move(z, 0):
+        if sum(nrz) == 5 and legal_move(list(scan_rz), 0):
             return 1
 
     if one.count('O') == 2:
@@ -389,37 +389,37 @@ def comp(x, y, z, xcounter):
 
 
     ## Defensive strategy
-    if x.count('X') == 2:
+    if list(scan_rx).count('X') == 2:
         for k,v in scan_rx.items():
             if v == 'X':
                 nrx.append(k)
-        if sum(nrx) == 15 and legal_move(x, 2):
+        if sum(nrx) == 15 and legal_move(list(scan_rx), 2):
             return 9
-        if sum(nrx) == 16 and legal_move(x, 1):
+        if sum(nrx) == 16 and legal_move(list(scan_rx), 1):
             return 8
-        if sum(nrx) == 17 and legal_move(x, 0):
+        if sum(nrx) == 17 and legal_move(list(scan_rx), 0):
             return 7
 
-    if y.count('X') == 2:
+    if list(scan_ry).count('X') == 2:
         for k,v in scan_ry.items():
             if v == 'X':
                 nry.append(k)
-        if sum(nry) == 9 and legal_move(y, 2):
+        if sum(nry) == 9 and legal_move(list(scan_ry), 2):
             return 6
-        if sum(nry) == 11 and legal_move(y, 0):
+        if sum(nry) == 11 and legal_move(list(scan_ry), 0):
             return 4
-        if sum(nry) == 10 and legal_move(y, 1):
-            return 5 ## Probably unnecessary so last
+        if sum(nry) == 10 and legal_move(list(scan_ry), 1):
+            return 5 ## Probably unnecessary so last ## comment from old algo
 
-    if z.count('X') == 2:
+    if list(scan_rz).count('X') == 2:
         for k,v in scan_rz.items():
             if v == 'X':
                 nrz.append(k)
-        if sum(nrz) == 3 and legal_move(z, 2):
+        if sum(nrz) == 3 and legal_move(list(scan_rz), 2):
             return 3
-        if sum(nrz) == 4 and legal_move(z, 1):
+        if sum(nrz) == 4 and legal_move(list(scan_rz), 1):
             return 2
-        if sum(nrz) == 5 and legal_move(z, 0):
+        if sum(nrz) == 5 and legal_move(list(scan_rz), 0):
             return 1
 
     if one.count('X') == 2:
