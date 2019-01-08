@@ -5,6 +5,10 @@ import random
 import os
 
 def main():
+    tx = ttt_reset()[0]
+    ty = ttt_reset()[1]
+    tz = ttt_reset()[2]
+    counter = ttt_reset()[3]
 
 """
     banner()
@@ -210,6 +214,25 @@ def choose_player():
         player = 'O'
     return player
 
+
+
+def cortex(x, y, z, xcounter):
+    """
+    Advance calculations in order to determine
+    best possible move.
+    """
+    if xcounter == 1:
+        #here we go
+        
+        
+    
+
+
+
+
+
+
+"""
 def comp(x, y, z, xcounter):
     """
     AI functionality introduced
@@ -490,7 +513,7 @@ def comp(x, y, z, xcounter):
 
 
     return (random.choice(list(avail)))
-
+"""
 
 if __name__ == "__main__":
     main()
