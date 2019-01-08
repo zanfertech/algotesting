@@ -38,7 +38,7 @@ def main():
     complain = False
     TTT = False
     while not TTT:
-        print(f"DEBUG - counter = {counter}")
+        #print(f"DEBUG - counter = {counter}")
         status_check(tx, ty, tz)
 
         if counter == 1:
@@ -429,7 +429,7 @@ def comp(x, y, z, xcounter):
         if sum(nrz) == 5 and legal_move(list(scan_lrz), 0):
             return 1
 
-    print(f"DEBUG: testing one {one}")
+    #print(f"DEBUG: testing one {one}")
     if list(one).count('X') == 2:
         for k,v in scan_19.items():
             if v == 'X':
@@ -441,7 +441,7 @@ def comp(x, y, z, xcounter):
         if sum(n19) == 14 and legal_move(list(one), 0):
             return 1
 
-    print(f"DEBUG: testing three {three}")
+    #print(f"DEBUG: testing three {three}")
     if list(three).count('X') == 2:
         for k,v in scan_37.items():
             if v == 'X':
