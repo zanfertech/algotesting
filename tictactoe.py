@@ -6,7 +6,6 @@ import os
 
 def main():
 
-    os.system('clear')
     banner()
     mode = 3
     while mode < 1 or mode > 2:
@@ -158,6 +157,7 @@ def ttt_reset():
     return (x, y, z, xcounter)
 
 def banner():
+        os.system('clear')
         print("###############")
         print("## TicTacToe ##")
         print("###############")
@@ -165,7 +165,6 @@ def banner():
         print("")
 
 def status_check(tx, ty, tz):
-        os.system('clear')
         banner()
         print("")
         print(*tx, sep=" | ")
@@ -305,7 +304,7 @@ def comp(x, y, z, xcounter):
     nc2 = []
     nc3 = []
 
-    ## Offensive trategy
+    ## Offensive strategy
     if list(scan_lrx).count('O') == 2:
         for k,v in scan_rx.items():
             if v == 'O':
