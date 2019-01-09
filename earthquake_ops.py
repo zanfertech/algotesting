@@ -32,6 +32,9 @@ def main():
         amount of memory available. This means you cannot safely store the sum of earthquake magnitudes or
         write the sum to disk. You can still keep a count of the number of earthquakes in memory.
     """
+    import os
+
+    os.system('wget -o /tmp/eq_1mo.csv https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_month.csv')
 
 
 if __name__ == "__main__":
