@@ -5,13 +5,12 @@ import random
 import os
 
 def main():
-    print("start")
-    tx = ttt_reset()[0]
-    ty = ttt_reset()[1]
-    tz = ttt_reset()[2]
+    r1 = ttt_reset()[0]
+    r2 = ttt_reset()[1]
+    r3 = ttt_reset()[2]
     counter = ttt_reset()[3]
 
-    cortex(tx, ty, tz, counter)
+    cortex(r1, r2, r3, counter)
 
 """
     banner()
@@ -34,9 +33,9 @@ def main():
         else:
             print("Invalid key - Please try again")
 
-    tx = ttt_reset()[0]
-    ty = ttt_reset()[1]
-    tz = ttt_reset()[2]
+    r1 = ttt_reset()[0]
+    r2 = ttt_reset()[1]
+    r3 = ttt_reset()[2]
     counter = ttt_reset()[3]
 
     player = choose_player()
@@ -46,7 +45,7 @@ def main():
     TTT = False
     while not TTT:
         #print(f"DEBUG - counter = {counter}")
-        status_check(tx, ty, tz)
+        status_check(r1, r2, r3)
 
         if counter == 1:
             print("")
@@ -65,7 +64,7 @@ def main():
                 turn = input(f"Selection for {player}: ")
             else:
                 print("Selection for Computer")
-                turn = comp(tx, ty, tz, counter)
+                turn = comp(r1, r2, r3, counter)
                 print(f"Computer selected {turn}")
                 time.sleep(1)
 
@@ -75,24 +74,24 @@ def main():
             complain = True
             continue
 
-        if turn == 1 and legal_move(tz, 0):
-            tz[0] = player
-        elif turn == 2 and legal_move(tz, 1):
-            tz[1] = player
-        elif turn == 3 and legal_move(tz, 2):
-            tz[2] = player
-        elif turn == 4 and legal_move(ty, 0):
-            ty[0] = player
-        elif turn == 5 and legal_move(ty, 1):
-            ty[1] = player
-        elif turn == 6 and legal_move(ty, 2):
-            ty[2] = player
-        elif turn == 7 and legal_move(tx, 0):
-            tx[0] = player
-        elif turn == 8 and legal_move(tx, 1):
-            tx[1] = player
-        elif turn == 9 and legal_move(tx, 2):
-            tx[2] = player
+        if turn == 1 and legal_move(r3, 0):
+            r3[0] = player
+        elif turn == 2 and legal_move(r3, 1):
+            r3[1] = player
+        elif turn == 3 and legal_move(r3, 2):
+            r3[2] = player
+        elif turn == 4 and legal_move(r2, 0):
+            r2[0] = player
+        elif turn == 5 and legal_move(r2, 1):
+            r2[1] = player
+        elif turn == 6 and legal_move(r2, 2):
+            r2[2] = player
+        elif turn == 7 and legal_move(r1, 0):
+            r1[0] = player
+        elif turn == 8 and legal_move(r1, 1):
+            r1[1] = player
+        elif turn == 9 and legal_move(r1, 2):
+            r1[2] = player
         elif turn == 0:
             print("Exiting")
             bye_felicia()
@@ -101,17 +100,17 @@ def main():
             complain = True
             continue
 
-        TTT = check_ttt(tx, ty, tz, player)
+        TTT = check_ttt(r1, r2, r3, player)
         if TTT:
-            status_check(tx, ty, tz)
+            status_check(r1, r2, r3)
             print("")
             print(f"TicTacToe - {player} wins")
             print("")
             if replay():
                 ttt_reset()
-                tx = ttt_reset()[0]
-                ty = ttt_reset()[1]
-                tz = ttt_reset()[2]
+                r1 = ttt_reset()[0]
+                r2 = ttt_reset()[1]
+                r3 = ttt_reset()[2]
                 counter = ttt_reset()[3]
                 TTT = False
                 player = choose_player()
@@ -128,14 +127,14 @@ def main():
                 counter += 1
 
         if counter > 9:
-            status_check(tx, ty, tz)
+            status_check(r1, r2, r3)
             print("Tie Game")
             print("")
             if replay():
                 ttt_reset()
-                tx = ttt_reset()[0]
-                ty = ttt_reset()[1]
-                tz = ttt_reset()[2]
+                r1 = ttt_reset()[0]
+                r2 = ttt_reset()[1]
+                r3 = ttt_reset()[2]
                 counter = ttt_reset()[3]
                 TTT = False
                 player = choose_player()
@@ -156,14 +155,7 @@ def legal_move(t, turn):
     else:
         return True
 
-def ttt_reset():
 
-    x = ['7', '8', '9' ]
-    y = ['4', '5', '6' ]
-    z = ['1', '2', '3' ]
-    xcounter = 1
-
-    return (x, y, z, xcounter)
 
 def banner():
         os.system('clear')
@@ -173,14 +165,14 @@ def banner():
         print("Enter 0 to exit")
         print("")
 
-def status_check(tx, ty, tz):
+def status_check(r1, r2, r3):
         banner()
         print("")
-        print(*tx, sep=" | ")
+        print(*r1, sep=" | ")
         print("--+---+--")
-        print(*ty, sep=" | ")
+        print(*r2, sep=" | ")
         print("--+---+--")
-        print(*tz, sep=" | ")
+        print(*r3, sep=" | ")
         print("")
         print("")
 
@@ -194,13 +186,13 @@ def replay():
         print("invalid response")
         replay()
 
-def check_ttt(tx, ty, tz, player):
+def check_ttt(r1, r2, r3, player):
 
-    if tx[0] == tx[1] == tx[2] or ty[0] == ty[1] == ty[2] or tz[0] == tz[1] == tz[2]:
+    if r1[0] == r1[1] == r1[2] or r2[0] == r2[1] == r2[2] or r3[0] == r3[1] == r3[2]:
         return player
-    elif tx[0] == ty[0] == tz[0] or tx[1] == ty[1] == tz[1] or tx[2] == ty[2] == tz[2]:
+    elif r1[0] == r2[0] == r3[0] or r1[1] == r2[1] == r3[1] or r1[2] == r2[2] == r3[2]:
         return player
-    elif tx[0] == ty[1] == tz[2] or tx[2] == ty[1] == tz[0]:
+    elif r1[0] == r2[1] == r3[2] or r1[2] == r2[1] == r3[0]:
         return player
     #else:
     #    return 0
@@ -217,6 +209,76 @@ def choose_player():
         player = 'O'
     return player
 
+def ttt_reset():
+    """
+    Resets board (or single array) to numerical
+    digits
+
+    Default layout and map:
+    #    c1    c2   c3
+    r1 = ['7', '8', '9' ]
+    r2 = ['4', '5', '6' ]
+    r3 = ['1', '2', '3' ]
+    #  v19             v37
+    xcounter = 1
+    """
+    ## Redefined layout for AI testing
+
+    r1 = ['7', '8', '9' ]
+    r2 = ['4', '5', '6' ]
+    r3 = ['1', '2', '3' ]
+    xcounter = 1
+
+    return (r1, r2, r3, xcounter)
+
+##################NEW AI#################
+def foresite(survey, opos, xpos):
+    """
+    Recursive function to evaluate next move
+    """
+    vr1 = (survey[7], survey[8], survey[9])
+    vr2 = (survey[4], survey[5], survey[6])
+    vr3 = (survey[1], survey[2], survey[3])
+    
+    vc1 = (survey[7], survey[4], survey[1])
+    vc2 = (survey[8], survey[5], survey[2])
+    vc3 = (survey[9], survey[6], survey[3])
+
+    v19 = (survey[1], survey[5], survey[9])
+    v37 = (survey[3], survey[5], survey[7])
+
+
+    if opos == 1:
+        check_vectors(vr3, vc1, v19)
+    elif opos == 2:
+        check_vectors(vr3, vc2)
+    elif opos == 3:
+        check_vectors(vr3, vc3, v37)
+    elif opos == 4:
+        check_vectors(vr2, vc1)
+    elif opos == 5:
+        check_vectors(vr2, vc2, v19, v37)
+    elif opos == 6:
+        check_vectors(vr2, vc3)
+    elif opos == 7:
+        check_vectors(vr1, vc1, v37)
+    elif opos == 8:
+        check_vectors(vr1, vc2)
+    elif opos == 9:
+        check_vectors(vr1, vc3, v19)
+
+
+def check_vectors(vr, vc, vd1=[], vd2=[]):
+    """
+    Checks row vector 'vr', column vector 'vc'
+    and diagonal vector 'vd' if not null.
+    """
+    print(f"Vector vr is {vr}")
+    print(f"Vector vc is {vc}")
+    print(f"Vector vd is {vd1}")
+    print(f"Vector vd is {vd2}")
+
+
 def best_chance(survey, xcounter):
     """
     Best chance to win, based on all possible
@@ -225,20 +287,33 @@ def best_chance(survey, xcounter):
     DEBUG = True
 
     if DEBUG:
-        print(f"counter at {xcounter}")
-        print(f"lenth of survey {len(survey)}")
-        print(f"contents of survey {survey}")
-
+        print(f"DEBUG: counter at {xcounter}")
+        print(f"DEBUG: lenth of survey {len(survey)}")
+        print(f"DEBUG: contents of survey {survey}")
+    
+    avail_list = list(range(1, 10))
+    if DEBUG:
+        print(f"DEBUG: avail_list before is {avail_list}")
+    for k, v in survey.items():
+        if v == 'X' or v == 'O':
+            avail_list.pop(k)
+    if DEBUG:
+        print(f"DEBUG: avail_list after is {avail_list}")
 
     if xcounter == 1:
-        for xpos in range(0, len(survey)):
-            for oppos in range(0, len(survey)):
+        for opos in range(1, ( len(survey) + 1 )):
+            avail_list.pop(opos)
+            if DEBUG:
+                print(f"DEBUG: avail_list after opos pop is {avail_list}")
+            for xpos in avail_list:
                 if DEBUG:
-                    print(f"xpos at {xpos}")
-                    print(f"oppos at {oppos}")
+                    print(f"DEBUG: xpos at {opos}")
+                    print(f"DEBUG: oppos at {xpos}")
+                foresite(survey, opos, xpos)
+            
 
 
-def cortex(x, y, z, xcounter):
+def cortex(r1, r2, r3, xcounter):
     """
     Advance calculations in order to determine
     best possible move.
@@ -246,12 +321,14 @@ def cortex(x, y, z, xcounter):
 
     ## Construct grid
 
-    survey = { 1 : z[0] , 2 : z[1] , 3 : z[2] ,
-            4 : y[0] , 5 : y[1] , 6 : y[2] ,
-            7 : x[0] , 8 : x[1] , 9 : x[2] }
+    survey = { 1 : r3[0] , 2 : r3[1] , 3 : r3[2] ,
+            4 : r2[0] , 5 : r2[1] , 6 : r2[2] ,
+            7 : r1[0] , 8 : r1[1] , 9 : r1[2] }
 
-
-        #here we go
+    ## Determine counter based on avaialble squares
+    xcounter = (list(survey.values()).count('O') + list(survey.values()).count('X')) + 1
+    
+    #here we go
     best_chance(survey, xcounter)
 
 
@@ -262,7 +339,7 @@ def cortex(x, y, z, xcounter):
 
 
     """
-def comp(x, y, z, xcounter):
+def comp(r1, r2, r3, xcounter):
     """
     ## AI functionality introduced
     """
@@ -276,9 +353,9 @@ def comp(x, y, z, xcounter):
     # After 3rd move, all hell breaks loose, hahah
 
     # Build comps personal mapping of board
-    survey = { 1 : z[0] , 2 : z[1] , 3 : z[2] ,
-            4 : y[0] , 5 : y[1] , 6 : y[2] ,
-            7 : x[0] , 8 : x[1] , 9 : x[2] }
+    survey = { 1 : r3[0] , 2 : r3[1] , 3 : r3[2] ,
+            4 : r2[0] , 5 : r2[1] , 6 : r2[2] ,
+            7 : r1[0] , 8 : r1[1] , 9 : r1[2] }
 
     xlist = []
     olist = []
@@ -329,22 +406,22 @@ def comp(x, y, z, xcounter):
             # will be returned.
 
 
-    scan_rx = { 7 : survey[7], 8 : survey[8], 9 : survey[9] }
-    scan_ry = { 4 : survey[4], 5 : survey[5], 6 : survey[6] }
-    scan_rz = { 1 : survey[1], 2 : survey[2], 3 : survey[3] }
+    scan_r1 = { 7 : survey[7], 8 : survey[8], 9 : survey[9] }
+    scan_r2 = { 4 : survey[4], 5 : survey[5], 6 : survey[6] }
+    scan_r3 = { 1 : survey[1], 2 : survey[2], 3 : survey[3] }
 
-    scan_lrx = list(scan_rx.values())
-    scan_lry = list(scan_ry.values())
-    scan_lrz = list(scan_rz.values())
+    scan_lr1 = list(scan_r1.values())
+    scan_lr2 = list(scan_r2.values())
+    scan_lr3 = list(scan_r3.values())
 
     scan_19 = { 1 : survey[1], 5 : survey[5], 9 : survey[9]}
     scan_37 = { 3 : survey[3], 5 : survey[5], 7 : survey[7]}
 
     one = list(scan_19.values())
     three = list(scan_37.values())
-    nrz = []
-    nry = []
-    nrx = []
+    nr3 = []
+    nr2 = []
+    nr1 = []
     n19 = []
     n37 = []
 
@@ -359,37 +436,37 @@ def comp(x, y, z, xcounter):
     nc3 = []
 
     ## Offensive strategy
-    if list(scan_lrx).count('O') == 2:
-        for k,v in scan_rx.items():
+    if list(scan_lr1).count('O') == 2:
+        for k,v in scan_r1.items():
             if v == 'O':
-                nrx.append(k)
-        if sum(nrx) == 15 and legal_move(list(scan_lrx), 2):
+                nr1.append(k)
+        if sum(nr1) == 15 and legal_move(list(scan_lr1), 2):
             return 9
-        if sum(nrx) == 16 and legal_move(list(scan_lrx), 1):
+        if sum(nr1) == 16 and legal_move(list(scan_lr1), 1):
             return 8
-        if sum(nrx) == 17 and legal_move(list(scan_lrx), 0):
+        if sum(nr1) == 17 and legal_move(list(scan_lr1), 0):
             return 7
 
-    if list(scan_lry).count('O') == 2:
-        for k,v in scan_ry.items():
+    if list(scan_lr2).count('O') == 2:
+        for k,v in scan_r2.items():
             if v == 'O':
-                nry.append(k)
-        if sum(nry) == 9 and legal_move(list(scan_lry), 2):
+                nr2.append(k)
+        if sum(nr2) == 9 and legal_move(list(scan_lr2), 2):
             return 6
-        if sum(nry) == 10 and legal_move(list(scan_lry), 1):
+        if sum(nr2) == 10 and legal_move(list(scan_lr2), 1):
             return 5
-        if sum(nry) == 11 and legal_move(list(scan_lry), 0):
+        if sum(nr2) == 11 and legal_move(list(scan_lr2), 0):
             return 4
 
-    if list(scan_lrz).count('O') == 2:
-        for k,v in scan_rz.items():
+    if list(scan_lr3).count('O') == 2:
+        for k,v in scan_r3.items():
             if v == 'O':
-                nrz.append(k)
-        if sum(nrz) == 3 and legal_move(list(scan_lrz), 2):
+                nr3.append(k)
+        if sum(nr3) == 3 and legal_move(list(scan_lr3), 2):
             return 3
-        if sum(nrz) == 4 and legal_move(list(scan_lrz), 1):
+        if sum(nr3) == 4 and legal_move(list(scan_lr3), 1):
             return 2
-        if sum(nrz) == 5 and legal_move(list(scan_lrz), 0):
+        if sum(nr3) == 5 and legal_move(list(scan_lr3), 0):
             return 1
 
     if one.count('O') == 2:
@@ -449,37 +526,37 @@ def comp(x, y, z, xcounter):
 
 
     ## Defensive strategy
-    if list(scan_lrx).count('X') == 2:
-        for k,v in scan_rx.items():
+    if list(scan_lr1).count('X') == 2:
+        for k,v in scan_r1.items():
             if v == 'X':
-                nrx.append(k)
-        if sum(nrx) == 15 and legal_move(list(scan_lrx), 2):
+                nr1.append(k)
+        if sum(nr1) == 15 and legal_move(list(scan_lr1), 2):
             return 9
-        if sum(nrx) == 16 and legal_move(list(scan_lrx), 1):
+        if sum(nr1) == 16 and legal_move(list(scan_lr1), 1):
             return 8
-        if sum(nrx) == 17 and legal_move(list(scan_lrx), 0):
+        if sum(nr1) == 17 and legal_move(list(scan_lr1), 0):
             return 7
 
-    if list(scan_lry).count('X') == 2:
-        for k,v in scan_ry.items():
+    if list(scan_lr2).count('X') == 2:
+        for k,v in scan_r2.items():
             if v == 'X':
-                nry.append(k)
-        if sum(nry) == 9 and legal_move(list(scan_lry), 2):
+                nr2.append(k)
+        if sum(nr2) == 9 and legal_move(list(scan_lr2), 2):
             return 6
-        if sum(nry) == 11 and legal_move(list(scan_lry), 0):
+        if sum(nr2) == 11 and legal_move(list(scan_lr2), 0):
             return 4
-        if sum(nry) == 10 and legal_move(list(scan_lry), 1):
+        if sum(nr2) == 10 and legal_move(list(scan_lr2), 1):
             return 5 ## Probably unnecessary so last ## comment from old algo
 
-    if list(scan_lrz).count('X') == 2:
-        for k,v in scan_rz.items():
+    if list(scan_lr3).count('X') == 2:
+        for k,v in scan_r3.items():
             if v == 'X':
-                nrz.append(k)
-        if sum(nrz) == 3 and legal_move(list(scan_lrz), 2):
+                nr3.append(k)
+        if sum(nr3) == 3 and legal_move(list(scan_lr3), 2):
             return 3
-        if sum(nrz) == 4 and legal_move(list(scan_lrz), 1):
+        if sum(nr3) == 4 and legal_move(list(scan_lr3), 1):
             return 2
-        if sum(nrz) == 5 and legal_move(list(scan_lrz), 0):
+        if sum(nr3) == 5 and legal_move(list(scan_lr3), 0):
             return 1
 
     #print(f"DEBUG: testing one {one}")
