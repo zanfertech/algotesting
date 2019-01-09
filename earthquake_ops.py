@@ -1,5 +1,8 @@
 #!/usr/bin/env python3.6
 
+import os
+import csv
+
 def main():
     """
         Earthquake Programming Challenge
@@ -32,9 +35,52 @@ def main():
         amount of memory available. This means you cannot safely store the sum of earthquake magnitudes or
         write the sum to disk. You can still keep a count of the number of earthquakes in memory.
     """
-    import os
 
-    os.system('wget https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_month.csv')
+
+    # try:
+    #     with open('1.0_month.csv') as eq_data:
+    #         read_eq_data = csv.reader(eq_data, delimiter=',')
+    # except:
+    #     os.system('wget https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_month.csv')
+    #     with open('1.0_month.csv') as eq_data:
+    #         read_eq_data = csv.reader(eq_data, delimiter=',')
+
+    #         for row in read_eq_data:
+    #             print(row)
+
+    # with open('1.0_month.csv') as eq_data:
+    #     read_eq_data = csv.DictReader(eq_data, delimiter=',')
+    #     for row in read_eq_data:
+    #         print(row['mag'])
+
+    DEBUG = True
+
+    loc_src_list = []
+
+    with open('1.0_month.csv') as eq_data:
+        read_eq_data = csv.DictReader(eq_data, delimiter=',')
+        for row in read_eq_data:
+            if row['locationSource'] not in loc_src_list:
+                loc_src_list.append(row['locationSource'])
+
+        if DEBUG:
+            print(f"List of unique locations: {loc_src_list}")
+
+        for loc in loc_src_list:
+            if DEBUG:
+                print(f"working on {loc}")
+            eq_data.seek(0)
+            mag_per_loc = []
+            for row in read_eq_data:
+                if row['locationSource'] == loc:
+                    mag_per_loc.append(float(row['mag']))
+            #print(f"loc {loc} has magnitudes listed as: {mag_per_loc}")
+            print(f"loc {loc} has average magnitudes of: { sum(mag_per_loc) / len(mag_per_loc) } ")
+
+
+
+
+
 
 
 if __name__ == "__main__":
