@@ -34,7 +34,7 @@ def main():
     """
     import os
 
-    os.system('wget -o /tmp/eq_1mo.csv https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_month.csv')
+    os.system('wget https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_month.csv')
 
 
 if __name__ == "__main__":
