@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.6
 
-import time
+from time import sleep
 import random
 import os
 
@@ -66,7 +66,7 @@ def main():
                 print("Selection for Computer")
                 turn = comp(r1, r2, r3, counter)
                 print(f"Computer selected {turn}")
-                time.sleep(1)
+                sleep(1)
 
         try:
             turn = int(turn)
@@ -344,7 +344,7 @@ def comp(r1, r2, r3, xcounter):
     ## AI functionality introduced
     """
 
-    time.sleep(1)
+    sleep(1)
     if xcounter == 1:
         return random.choice([7, 9, 5, 1, 3])
 
