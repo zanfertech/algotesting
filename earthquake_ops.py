@@ -44,7 +44,7 @@ def main():
     """
     
     # avg_mag_per_loc()
-    
+
     # try:
     #     with open('1.0_month.csv') as eq_data:
     #         read_eq_data = csv.reader(eq_data, delimiter=',')
@@ -55,10 +55,10 @@ def main():
 
     #         for row in read_eq_data:
     #             print(row)
-    DEBUG = True
+    DEBUG = False
 
     loc_src_list = []
-    avg_mag_db = {}
+    eq_count_db = {}
 
     with open('1.0_month.csv') as eq_data:
         read_eq_data = csv.DictReader(eq_data, delimiter=',')
@@ -70,21 +70,49 @@ def main():
 
         for loc in loc_src_list:
             eq_data.seek(0)
-            mag_per_loc = []
+            eq_count = 0
             for row in read_eq_data:
                 if row['locationSource'] == loc:
-                    mag_per_loc.append(float(row['mag']))
+                    eq_count += 1
+            
+            eq_count_db.update( { loc.upper() : eq_count } )
+        print(eq_count_db)
+        print("")
+        max_val = (sorted(eq_count_db.values(), reverse=True)[0])
 
-            ## Per project scope definition, divide by zero shouldn't happen
-            ## But we'll check anyway
-            if len(mag_per_loc) == 0:
-                avg_mag = 0
-            else:
-                avg_mag = ( sum(mag_per_loc) / len(mag_per_loc) ) 
-            print(f"{loc.upper()} has had earthquakes with an average magnitudes of { avg_mag } ")
-            ## Save to a dict
-            avg_mag_db.update({ loc.upper() : avg_mag  })
-        print(avg_mag_db)
+        for k, v in eq_count_db.items():
+            if v == max_val:
+                print(f"The location with the most earthquakes is {k}")
+        print("")
+
+        dcounter = 0
+        eq_data.seek(0)
+        eq_date_list = []
+        eq_date_db = {}
+
+        for row in read_eq_data:
+            eq_date = (row['time']).split('T')
+            if eq_date not in eq_date_list:
+                eq_date_list.append(eq_date)
+            
+
+        # avg_mag_db = {}
+        # for loc in loc_src_list:
+        #     eq_data.seek(0)
+        #     mag_per_loc = []
+        #     for row in read_eq_data:
+        #         if row['locationSource'] == loc:
+        #             mag_per_loc.append(float(row['mag']))
+        #     ## Per project scope definition, divide by zero shouldn't happen
+        #     ## But we'll check anyway
+        #     if len(mag_per_loc) == 0:
+        #         avg_mag = 0
+        #     else:
+        #         avg_mag = ( sum(mag_per_loc) / len(mag_per_loc) ) 
+        #     print(f"{loc.upper()} has had earthquakes with an average magnitudes of { avg_mag } ")
+        #     ## Save to a dict
+        #     avg_mag_db.update({ loc.upper() : avg_mag  })
+        # print(avg_mag_db)
 
 
 
