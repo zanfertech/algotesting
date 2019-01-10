@@ -109,7 +109,7 @@ def avg_magnitude():
         mag_per_loc = []
         for row in quake:
             if row['locationSource'] == loc:
-                mag_per_loc.append(float(row['mag'])
+                mag_per_loc.append(float(row['mag']))
         ## Per project scope definition, divide by zero shouldn't happen
         ## But we'll check anyway
         if len(mag_per_loc) == 0:
@@ -189,7 +189,7 @@ def m_menu():
 def get_loc_list():
     """
      Provides other functions with a list of all locations
-     """
+    """
     DEBUG = False
 
     loc_src_list = []
