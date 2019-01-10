@@ -133,6 +133,7 @@ def process_live_data_row(row):
         newmag = (master_live_db[loc][0] * count + float(row['mag'])) / (count + 1)
         master_live_db.update( { loc : [ newmag, count + 1 ] } )
 
+
 def live_data(old_timestamp=''):
     quake = get_eq_csv()
     mag_per_loc = []
@@ -141,10 +142,12 @@ def live_data(old_timestamp=''):
         process_live_data_row(row)
         refresh_monitor()
 
+
+
 def refresh_monitor():
     os.system('clear')
     print('Displaying live average magnitude data')
-    print("Use CTRL-C to break out")
+    print("Use CTRL+C to break out")
     print("")    
     print("|Place | # of Earthquakes | Average Magnitude|")
     for k,v in master_live_db.items():
@@ -164,7 +167,7 @@ def m_menu():
         print("")
         
         try:
-            option = int(input("Please select from options 1-4: "))
+            option = int(input("Please select from options 1-5: "))
         except:
             print("Invalid selection - Please try again")
             continue
