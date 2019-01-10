@@ -150,7 +150,7 @@ def live_data(loc_src_list=[], avg_mag_db={}, xcounter=0):
             print(f"{loc.upper()} has had earthquakes with an average magnitudes of { avg_mag } ")
             ## Save to a dict
             avg_mag_db.update({ loc.upper() : avg_mag  })
-        return live_data(loc_src_list, avg_mag_db, xcounter)        
+        yield live_data(loc_src_list, avg_mag_db, xcounter)        
 
 
 
