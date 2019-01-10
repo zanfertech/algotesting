@@ -14,12 +14,8 @@ def main():
 
     DEBUG = False
 
-
     m_menu()
-    ##most_eqs()
-    ##eqs_per_day()
-    ##avg_magnitude()
-    ##live_data()
+
 
 
 def most_eqs():
@@ -36,7 +32,7 @@ def most_eqs():
 
 
     for loc in loc_src_list:
-        quake = get_eq_csv()
+        head, *quake = get_eq_csv()
         eq_count = 0
         for row in quake:
             if row['locationSource'] == loc:
@@ -57,7 +53,7 @@ def most_eqs():
 
     ## Graphical breakdown of earthquakes per location
     for k, v in eq_count_db.items():
-        print(f"{k}: {v} {'#' * int(v/10)}")
+        print(f"{k}:\t{v}\t]{'#' * int(v*100/max_val)}")
     
     m_menu()
 
@@ -126,7 +122,6 @@ def avg_magnitude():
     m_menu()
 
 
-
 def live_data(master_live_db={}, old_timestamp=''):
 
     """
@@ -175,35 +170,37 @@ def live_data(master_live_db={}, old_timestamp=''):
     
     return live_data(master_live_db, new_timestamp)
 
-def m_menu():
-    print("")
-    print("  1. Location with the most earthquakes")
-    print("  2. Histogram of the number of earthquakes per day in UTC")
-    print("  3. Average earthquake magnitude by location")
-    print("  4. Live data stream (Beta)")
-    print("  0. Exit")
-    print("")
-    
-    try:
-        option = int(input("Please selec from options 1-4: "))
-    except:
-        print("Invalid selection - Please try again")
-        m_menu()
 
-    if option == 1:
-        most_eqs()
-    elif option == 2:
-        eqs_per_day()
-    elif option == 3:
-        avg_magnitude()
-    elif option == 4:
-        live_data()
-    elif option == 0:
-        "Have a nice day"
-        exit()
-    else:
-        print("Invalid selection - Please try again")
-        m_menu()
+def m_menu():
+    while True:
+        print("")
+        print("  1. Location with the most earthquakes")
+        print("  2. Histogram of the number of earthquakes per day in UTC")
+        print("  3. Average earthquake magnitude by location")
+        print("  4. Live data stream (Beta)")
+        print("  0. Exit")
+        print("")
+        
+        try:
+            option = int(input("Please select from options 1-4: "))
+        except:
+            print("Invalid selection - Please try again")
+            continue
+
+        if option == 1:
+            most_eqs()
+        elif option == 2:
+            eqs_per_day()
+        elif option == 3:
+            avg_magnitude()
+        elif option == 4:
+            live_data()
+        elif option == 0:
+            print("Have a nice day")
+            exit()
+        else:
+            print("Invalid selection - Please try again")
+
 
 def get_loc_list():
     """
@@ -224,6 +221,7 @@ def get_loc_list():
 
 
 def get_eq_csv():
+    
     with open('1.0_month.csv') as eq_data: ### Testing live data with copy of csv that updates
         read_eq_data = csv.DictReader(eq_data, delimiter=',')
         for quake in read_eq_data:
