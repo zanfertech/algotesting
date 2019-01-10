@@ -6,9 +6,6 @@ import time
 from datetime import datetime
 from pytz import timezone
 
-this = "2019-01-04T12:40:36.560Z"
-thisnow = this.split("T")[0]
-print(thisnow + '\n')
 
 def main():
     """
@@ -42,98 +39,111 @@ def main():
         amount of memory available. This means you cannot safely store the sum of earthquake magnitudes or
         write the sum to disk. You can still keep a count of the number of earthquakes in memory.
     """
-    
-    # avg_mag_per_loc()
 
-    # try:
-    #     with open('1.0_month.csv') as eq_data:
-    #         read_eq_data = csv.reader(eq_data, delimiter=',')
-    # except:
-    #     os.system('wget https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_month.csv')
-    #     with open('1.0_month.csv') as eq_data:
-    #         read_eq_data = csv.reader(eq_data, delimiter=',')
 
-    #         for row in read_eq_data:
-    #             print(row)
+
     DEBUG = False
 
-    loc_src_list = []
+    ##most_eqs()
+    ##eqs_per_day()
+    avg_magnitude()
+
+
+def most_eqs():
+    """
+     Prints location with the most earthquakes
+     As well as a pretty graph
+    """
+    DEBUG = False
+    loc_src_list = get_loc_list()
     eq_count_db = {}
 
-    with open('1.0_month.csv') as eq_data:
-        read_eq_data = csv.DictReader(eq_data, delimiter=',')
-        for row in read_eq_data:
-            if row['locationSource'] not in loc_src_list:
-                loc_src_list.append(row['locationSource'])
-        if DEBUG:
-            print(f"List of unique locations: {loc_src_list}")
+    print("Loading...")
 
-        for loc in loc_src_list:
-            eq_data.seek(0)
-            eq_count = 0
-            for row in read_eq_data:
-                if row['locationSource'] == loc:
-                    eq_count += 1
-            
-            eq_count_db.update( { loc.upper() : eq_count } )
-        print(eq_count_db)
-        print("")
-        max_val = (sorted(eq_count_db.values(), reverse=True)[0])
 
-        for k, v in eq_count_db.items():
-            if v == max_val:
-                print(f"The location with the most earthquakes is {k}")
-        print("")
 
-        ## Graphical breakdown of earthquakes per location
-        for k, v in eq_count_db.items():
-            print(f"{k}: {'#' * int(v/10)}")
+    for loc in loc_src_list:
+        quake = get_eq_csv()
+        eq_count = 0
+        for row in quake:
+            if row['locationSource'] == loc:
+                eq_count += 1
         
-        print("")
-        print("")
+        eq_count_db.update( { loc.upper() : eq_count } )
 
-        
-        eq_data.seek(0)
-        eq_date_list = []
-        eq_date_db = {}
+    print("")
+    max_val = (sorted(eq_count_db.values(), reverse=True)[0])
 
-        for row in read_eq_data:
-            eq_date = (row['time']).split('T')[0]
-            if eq_date not in eq_date_list:
-                eq_date_list.append(eq_date)
-        
-        
-        for eq_date in eq_date_list:
-            eq_data.seek(0)
-            dcounter = 0
-            for row in read_eq_data:
-                if eq_date == (row['time']).split('T')[0]:
-                    dcounter += 1
-            eq_date_db.update( { eq_date : dcounter } )
-        print(eq_date_db)
+    os.system('clear')
+    print("Number of earthquakes per day:")
+    print("")
+    for k, v in eq_count_db.items():
+        if v == max_val:
+            print(f"The location with the most earthquakes is {k}")
+    print("")
 
-        print("")
-        print("")
-        for k, v in eq_date_db.items():
-            print(f"{k}: [{v}] {'#' * int(v/10)}")
+    ## Graphical breakdown of earthquakes per location
+    for k, v in eq_count_db.items():
+        print(f"{k}: {v} {'#' * int(v/10)}")
+    
+    print("")
+    print("")
 
-        avg_mag_db = {}
-        for loc in loc_src_list:
-            eq_data.seek(0)
-            mag_per_loc = []
-            for row in read_eq_data:
-                if row['locationSource'] == loc:
-                    mag_per_loc.append(float(row['mag']))
-            ## Per project scope definition, divide by zero shouldn't happen
-            ## But we'll check anyway
-            if len(mag_per_loc) == 0:
-                avg_mag = 0
-            else:
-                avg_mag = ( sum(mag_per_loc) / len(mag_per_loc) ) 
-            print(f"{loc.upper()} has had earthquakes with an average magnitudes of { avg_mag } ")
-            ## Save to a dict
-            avg_mag_db.update({ loc.upper() : avg_mag  })
-        print(avg_mag_db)
+def eqs_per_day():
+    """
+    Histogram of the number of earthquakes per day in UTC
+    """
+    DEBUG = False
+    eq_date_list = []
+    eq_date_db = {}
+
+    print("Loading...")
+    quake = get_eq_csv()
+    for row in quake:
+        eq_date = (row['time']).split('T')[0]
+        if eq_date not in eq_date_list:
+            eq_date_list.append(eq_date)
+    
+    
+    for eq_date in eq_date_list:
+        quake = get_eq_csv()
+        dcounter = 0
+        for row in quake:
+            if eq_date == (row['time']).split('T')[0]:
+                dcounter += 1
+        eq_date_db.update( { eq_date : dcounter } )
+
+    os.system('clear')
+    print("Number of earthquakes per day:")
+    print("")
+    for k, v in eq_date_db.items():
+        print(f"{k}: [{v}] {'#' * int(v/10)}")
+
+
+def avg_magnitude():
+    """
+    Average earthquake magnitude for each location source
+    """
+
+    avg_mag_db = {}
+    loc_src_list = get_loc_list()
+    
+    for loc in loc_src_list:
+        quake = get_eq_csv()
+        mag_per_loc = []
+        for row in quake:
+            if row['locationSource'] == loc:
+                mag_per_loc.append(float(row['mag']))
+        ## Per project scope definition, divide by zero shouldn't happen
+        ## But we'll check anyway
+        if len(mag_per_loc) == 0:
+            avg_mag = 0
+        else:
+            avg_mag = ( sum(mag_per_loc) / len(mag_per_loc) ) 
+        print(f"{loc.upper()} has had earthquakes with an average magnitudes of { avg_mag } ")
+        ## Save to a dict
+        avg_mag_db.update({ loc.upper() : avg_mag  })
+#    print(avg_mag_db)
 
 
 def live_data(master_live_db={}, old_timestamp=''):
@@ -183,7 +193,22 @@ def live_data(master_live_db={}, old_timestamp=''):
     
     return live_data(master_live_db, new_timestamp)
 
+def get_loc_list():
+    """
+     Provides other functions with a list of all locations
+     """
+    DEBUG = False
 
+    loc_src_list = []
+    quake = get_eq_csv()
+    for row in quake:
+        if row['locationSource'] not in loc_src_list:
+                loc_src_list.append(row['locationSource'])
+
+    if DEBUG:
+        print(f"List of unique locations: {loc_src_list}")
+
+    return loc_src_list
 
 
 def get_eq_csv():
