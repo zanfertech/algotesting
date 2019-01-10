@@ -109,7 +109,7 @@ def avg_magnitude():
         mag_per_loc = []
         for row in quake:
             if row['locationSource'] == loc:
-                mag_per_loc.append(float(row['mag']))
+                mag_per_loc.append(float(row['mag'])
         ## Per project scope definition, divide by zero shouldn't happen
         ## But we'll check anyway
         if len(mag_per_loc) == 0:
@@ -122,45 +122,26 @@ def avg_magnitude():
         avg_mag_db.update({ loc.upper() : avg_mag  })
 
 
-
-
-def live_data(master_live_db={}, old_timestamp=''):
-
-    """
-     Deep underground usage limits the growth of
-     locations to mem_max size. It will not accept 
-     new entries into DB, but will continue to display
-     stats.
-    """
-    mem_max = 100
-
-    """
-     Uses generator to load the data and
-     grab the last line. Should allow for 
-     very low memory consumption as unpacking
-     of data should happen on the fly.
-    """
-    my_eq_data = (x for x in get_eq_csv())
-    *head, quake = my_eq_data
-    quake = dict(quake)
-    new_timestamp = quake['time']
-    loc = quake['locationSource'].upper()
-
-    if new_timestamp == old_timestamp:
-        time.sleep(60) ## Checks every 60 seconds, unless data is pouring in
-        return live_data(master_live_db, new_timestamp)
-
-    """
-         master_live_db configuration:
-      { location : [ magnitude , counter ] }
-    """
-    if len(list(master_live_db)) == mem_max:
-        pass 
-    elif loc not in list(master_live_db):
-        master_live_db.update( { loc : [ float(quake['mag']) , 1 ] } )
+master_live_db={}
+def process_live_data_row(row):
+    ## takes 1 row of live data feed as an input and processes it
+    loc = row['locationSource'].upper()
+    if loc not in list(master_live_db):
+        master_live_db.update( { loc : [ float(row['mag']) , 1 ] } )
     else:
-        master_live_db.update( { loc : [ ( ( master_live_db[loc][0] + float(quake['mag']) ) / 2 ) , ( master_live_db[loc][1] + 1 ) ] } )
+        count = master_live_db[loc][1]
+        newmag = (master_live_db[loc][0] * count + float(row['mag'])) / (count + 1)
+        master_live_db.update( { loc : [ newmag, count + 1 ] } )
 
+def live_data(old_timestamp=''):
+    quake = get_eq_csv()
+    mag_per_loc = []
+    for row in quake:
+        time.sleep(1)
+        process_live_data_row(row)
+        refresh_monitor()
+
+def refresh_monitor():
     os.system('clear')
     print('Displaying live average magnitude data')
     print("Use CTRL-C to break out")
@@ -169,8 +150,6 @@ def live_data(master_live_db={}, old_timestamp=''):
     for k,v in master_live_db.items():
         print(f"|-- {k} --|---- {v[1]} ----|---- {v[0]} ----|")
 
-    
-    return live_data(master_live_db, new_timestamp)
 
 
 def m_menu():
