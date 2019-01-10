@@ -9,13 +9,10 @@ from pytz import timezone
 
 def main():
     """
-        Earthquake Programming Challenge
+     Earthquake Programming Challenge
     """
 
-    DEBUG = False
-
     m_menu()
-
 
 
 def most_eqs():
@@ -23,13 +20,11 @@ def most_eqs():
      Prints location with the most earthquakes
      As well as a pretty graph
     """
-    DEBUG = False
+
     loc_src_list = get_loc_list()
     eq_count_db = {}
 
     print("Loading...")
-
-
 
     for loc in loc_src_list:
         quake = get_eq_csv()
@@ -54,27 +49,23 @@ def most_eqs():
     ## Graphical breakdown of earthquakes per location
     for k, v in eq_count_db.items():
         print(f"{k}:\t{v}\t|{'#' * int(v*100/max_val)}")
-    
-
 
 
 def eqs_per_day(offset):
     """
     Histogram of the number of earthquakes per day in UTC
     """
-    DEBUG = False
+
     eq_date_list = []
     eq_date_db = {}
 
-
-
     print("Loading...")
+    
     quake = get_eq_csv()
     for row in quake:
         eq_date = convert_utc_to_pacific(row['time'], offset)
         if eq_date not in eq_date_list:
             eq_date_list.append(eq_date)
-    
     
     for eq_date in eq_date_list:
         quake = get_eq_csv()
@@ -89,8 +80,6 @@ def eqs_per_day(offset):
     print("")
     for k, v in eq_date_db.items():
         print(f"{k}: [{v}] {'#' * int(v/10)}")
-
-
 
 
 def avg_magnitude():
@@ -143,7 +132,6 @@ def live_data(old_timestamp=''):
         refresh_monitor()
 
 
-
 def refresh_monitor():
     os.system('clear')
     print('Displaying live average magnitude data')
@@ -152,7 +140,6 @@ def refresh_monitor():
     print("|Place | # of Earthquakes | Average Magnitude|")
     for k,v in master_live_db.items():
         print(f"|-- {k} --|---- {v[1]} ----|---- {v[0]} ----|")
-
 
 
 def m_menu():
@@ -184,7 +171,7 @@ def m_menu():
             live_data()
         elif option == 0:
             print("Have a nice day")
-            exit()
+            break
         else:
             print("Invalid selection - Please try again")
 
@@ -193,16 +180,12 @@ def get_loc_list():
     """
      Provides other functions with a list of all locations
     """
-    DEBUG = False
 
     loc_src_list = []
     quake = get_eq_csv()
     for row in quake:
         if row['locationSource'] not in loc_src_list:
                 loc_src_list.append(row['locationSource'])
-
-    if DEBUG:
-        print(f"List of unique locations: {loc_src_list}")
 
     return loc_src_list
 
@@ -212,12 +195,14 @@ def convert_utc_to_pacific(utcdatetime, offset):
     pacific = utc + timedelta(hours = offset)
     return str(pacific).split(' ')[0]
 
+
 def get_eq_csv():
     
     with open('1.0_month.csv') as eq_data: ### Testing live data with copy of csv that updates
         read_eq_data = csv.DictReader(eq_data, delimiter=',')
         for quake in read_eq_data:
             yield quake        
+
 
 if __name__ == "__main__":
     main()
