@@ -3,7 +3,7 @@
 import os
 import csv
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone
 
 
@@ -32,7 +32,7 @@ def most_eqs():
 
 
     for loc in loc_src_list:
-        head, *quake = get_eq_csv()
+        quake = get_eq_csv()
         eq_count = 0
         for row in quake:
             if row['locationSource'] == loc:
@@ -53,12 +53,12 @@ def most_eqs():
 
     ## Graphical breakdown of earthquakes per location
     for k, v in eq_count_db.items():
-        print(f"{k}:\t{v}\t]{'#' * int(v*100/max_val)}")
+        print(f"{k}:\t{v}\t|{'#' * int(v*100/max_val)}")
     
-    m_menu()
 
 
-def eqs_per_day():
+
+def eqs_per_day(offset):
     """
     Histogram of the number of earthquakes per day in UTC
     """
@@ -66,10 +66,12 @@ def eqs_per_day():
     eq_date_list = []
     eq_date_db = {}
 
+
+
     print("Loading...")
     quake = get_eq_csv()
     for row in quake:
-        eq_date = (row['time']).split('T')[0]
+        eq_date = convert_utc_to_pacific(row['time'], offset)
         if eq_date not in eq_date_list:
             eq_date_list.append(eq_date)
     
@@ -78,7 +80,7 @@ def eqs_per_day():
         quake = get_eq_csv()
         dcounter = 0
         for row in quake:
-            if eq_date == (row['time']).split('T')[0]:
+            if eq_date == convert_utc_to_pacific(row['time'], offset):
                 dcounter += 1
         eq_date_db.update( { eq_date : dcounter } )
 
@@ -88,7 +90,7 @@ def eqs_per_day():
     for k, v in eq_date_db.items():
         print(f"{k}: [{v}] {'#' * int(v/10)}")
 
-    m_menu()
+
 
 
 def avg_magnitude():
@@ -119,7 +121,7 @@ def avg_magnitude():
         ## Save to a dict
         avg_mag_db.update({ loc.upper() : avg_mag  })
 
-    m_menu()
+
 
 
 def live_data(master_live_db={}, old_timestamp=''):
@@ -176,8 +178,9 @@ def m_menu():
         print("")
         print("  1. Location with the most earthquakes")
         print("  2. Histogram of the number of earthquakes per day in UTC")
-        print("  3. Average earthquake magnitude by location")
-        print("  4. Live data stream (Beta)")
+        print("  3. Histogram of the number of earthquakes per day in Pacific Time")
+        print("  4. Average earthquake magnitude by location")
+        print("  5. Live data stream (Beta)")
         print("  0. Exit")
         print("")
         
@@ -190,10 +193,12 @@ def m_menu():
         if option == 1:
             most_eqs()
         elif option == 2:
-            eqs_per_day()
+            eqs_per_day(0)
         elif option == 3:
-            avg_magnitude()
+            eqs_per_day(-8)
         elif option == 4:
+            avg_magnitude()
+        elif option == 5:
             live_data()
         elif option == 0:
             print("Have a nice day")
@@ -220,6 +225,11 @@ def get_loc_list():
     return loc_src_list
 
 
+def convert_utc_to_pacific(utcdatetime, offset):
+    utc = datetime.strptime(utcdatetime, "%Y-%m-%dT%H:%M:%S.%fZ")
+    pacific = utc + timedelta(hours = offset)
+    return str(pacific).split(' ')[0]
+
 def get_eq_csv():
     
     with open('1.0_month.csv') as eq_data: ### Testing live data with copy of csv that updates
@@ -229,3 +239,4 @@ def get_eq_csv():
 
 if __name__ == "__main__":
     main()
+
