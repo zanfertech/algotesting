@@ -136,21 +136,61 @@ def main():
         print(avg_mag_db)
 
 
-def live_data(loc_src_list=[], avg_mag_db={}, xcounter=0):
-    with open("live_stream") as live_eq_data:
-        read_eq_data = csv.DictReader(live_eq_data, delimiter=',')
-        for row in read_eq_data:
-            if row['locationSource'] not in loc_src_list:
-                loc_src_list.append(row['locationSource'])
-            
+def live_data(master_live_db={}, old_timestamp=''):
 
-            # if row['locationSource'] == loc:
-                mag_per_loc.append(float(row['mag']))
-            avg_mag = ( sum(mag_per_loc) / len(mag_per_loc) ) 
-            print(f"{loc.upper()} has had earthquakes with an average magnitudes of { avg_mag } ")
-            ## Save to a dict
-            avg_mag_db.update({ loc.upper() : avg_mag  })
-        yield live_data(loc_src_list, avg_mag_db, xcounter)        
+    """
+     Deep underground usage limits the growth of
+     locations to mem_max size. It will not accept 
+     new entries into DB, but will continue to display
+     stats.
+    """
+    mem_max = 100
+
+    """
+     Uses generator to load the data and
+     grab the last line. Should allow for 
+     very low memory consumption as unpacking
+     of data should happen on the fly.
+    """
+    my_eq_data = (x for x in get_eq_csv())
+    *head, quake = my_eq_data
+    quake = dict(quake)
+    new_timestamp = quake['time']
+    loc = quake['locationSource'].upper()
+
+    if new_timestamp == old_timestamp:
+        time.sleep(60) ## Checks every 60 seconds, unless data is pouring in
+        return live_data(master_live_db, new_timestamp)
+
+    """
+         master_live_db configuration:
+      { location : [ magnitude , counter ] }
+    """
+    if len(list(master_live_db)) == mem_max:
+        pass 
+    elif loc not in list(master_live_db):
+        master_live_db.update( { loc : [ float(quake['mag']) , 1 ] } )
+    else:
+        master_live_db.update( { loc : [ ( ( master_live_db[loc][0] + float(quake['mag']) ) / 2 ) , ( master_live_db[loc][1] + 1 ) ] } )
+
+    os.system('clear')
+    print('Displaying live average magnitude data')
+    print("Use CTRL-C to break out")
+    print("|Place | # of Earthquakes | Average Magnitude|")
+    for k,v in master_live_db.items():
+        print(f"|--{k}--|----{v[1]}----|----{v[0]}----|")
+
+    
+    return live_data(master_live_db, new_timestamp)
+
+
+
+
+def get_eq_csv():
+    with open('1.0_month.csv') as eq_data: ### Testing live data with copy of csv that updates
+        read_eq_data = csv.DictReader(eq_data, delimiter=',')
+        for quake in read_eq_data:
+            yield quake        
 
 
 

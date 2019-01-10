@@ -43,7 +43,7 @@ def live_data(master_live_db={}, old_timestamp='', xcounter=1):
      new entries into DB, but will continue to display
      stats.
     """
-    mem_max = 100
+    mem_max = 2
 
     ## test ## loc_src_list = {'AK': 3274, 'UU': 202, 'CI': 673, 'NC': 550, 'US': 773, 'NN': 320, 'NM': 25, 'PR': 530, 'UW': 79, 'HV': 264, 'MB': 131, 'OK': 10, 'SE': 22, 'LD': 2, 'ROM': 1, 'AV': 21, 'ISMP': 3}
     """
@@ -59,6 +59,7 @@ def live_data(master_live_db={}, old_timestamp='', xcounter=1):
     loc = quake['locationSource'].upper()
 
     if new_timestamp == old_timestamp:
+        time.sleep(60) """ Checks every 60 seconds, unless data is pouring in """
         return live_data(master_live_db, new_timestamp, xcounter)
 
     """
@@ -67,10 +68,10 @@ def live_data(master_live_db={}, old_timestamp='', xcounter=1):
     """
     if len(list(master_live_db)) == mem_max:
         pass  ## 
-    elif quake['locationSource'] not in list(master_live_db):
+    elif loc not in list(master_live_db):
         master_live_db.update( { loc : [ float(quake['mag']) , 1 ] } )
     else:
-        master_live_db.update( { loc : [ ( ( master_live_db[loc][0] + float(quake['mag']) ) / master_live_db[loc][1] ) , ( master_live_db[loc][1] + 1 ) ] } )
+        master_live_db.update( { loc : [ ( ( master_live_db[loc][0] + float(quake['mag']) ) / 2 ) , ( master_live_db[loc][1] + 1 ) ] } )
 
     os.system('clear')
     print('Displaying live average magnitude data')
@@ -90,7 +91,7 @@ def live_data(master_live_db={}, old_timestamp='', xcounter=1):
 
 
 def get_eq_csv():
-    with open('1.1_month.csv') as eq_data: ### Testing live data with copy of csv that updates
+    with open('/Users/Zanfer/Desktop/ZanferTech/GitHub/algotesting/1.1_month.csv') as eq_data: ### Testing live data with copy of csv that updates
         read_eq_data = csv.DictReader(eq_data, delimiter=',')
         for quake in read_eq_data:
             yield quake
