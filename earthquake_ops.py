@@ -1,41 +1,209 @@
 #!/usr/bin/env python3.6
 
+import os
+import csv
+import time
+from datetime import datetime, timedelta
+from pytz import timezone
+
+
 def main():
     """
-        Earthquake Programming Challenge
-    Task
-    Write a Python program to analyze earthquake data. We are mainly looking for the organization, structure, and
-    approach to solving the problems. The output of the code can be as simple as print statements or return values. Feel
-    free to include unit tests if necessary.
-    Download the data
-    Download the newest CSV from the 30 day M1.0+ Earthquake feed from the website
-    https://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php and include it with your program.
-    Requirements
-    Please use Python 3.x. You may refer to outside sources for syntactical help or documentation, but not for looking up
-    anything specific to the questions. You can use any standard library in Python, but you may only use the external
-    libraries dateutil and pytz. All other third-party libraries are off-limits.
-    Questions
-    Below are four questions relating to the CSV.
-
-    1. Which location source had the most earthquakes?
-    2. Compute the data for a histogram of the number of earthquakes per day in UTC timezone. You do not need to
-    plot the histogram, just compute the data that would be required to plot it.
-        a. The program should print or return data points which represent the number of earthquakes in each
-        respective day.
-        b. Extra credit: Add an argument to your program that modifies it to compute the number of earthquakes per
-        day in Pacific timezone instead of UTC.
-    3. Compute the average earthquake magnitude for each location source.
-    4. Pretend that the CSV is a real-time stream of earthquake data. Provide an object that can process 1 CSV row at a
-    time and return the average earthquake magnitude for each location source when queried.
-        a. Extra credit: Modify the behavior of your object written in answer #4: Imagine that this code is going to be
-        running for years at a time without being restarted on a device buried deep underground with a fixed
-        amount of memory available. This means you cannot safely store the sum of earthquake magnitudes or
-        write the sum to disk. You can still keep a count of the number of earthquakes in memory.
+     Earthquake Programming Challenge
     """
-    import os
 
-    os.system('wget https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_month.csv')
+    m_menu()
+
+
+def most_eqs():
+    """
+     Prints location with the most earthquakes
+     As well as a pretty graph
+    """
+
+    loc_src_list = get_loc_list()
+    eq_count_db = {}
+
+    print("Loading...")
+
+    for loc in loc_src_list:
+        quake = get_eq_csv()
+        eq_count = 0
+        for row in quake:
+            if row['locationSource'] == loc:
+                eq_count += 1
+        
+        eq_count_db.update( { loc.upper() : eq_count } )
+
+    print("")
+    max_val = (sorted(eq_count_db.values(), reverse=True)[0])
+
+    os.system('clear')
+    print("Number of earthquakes per day:")
+    print("")
+    for k, v in eq_count_db.items():
+        if v == max_val:
+            print(f"The location with the most earthquakes is {k}")
+    print("")
+
+    ## Graphical breakdown of earthquakes per location
+    for k, v in eq_count_db.items():
+        print(f"{k}:\t{v}\t|{'#' * int(v*100/max_val)}")
+
+
+def eqs_per_day(offset):
+    """
+    Histogram of the number of earthquakes per day in UTC
+    """
+
+    eq_date_list = []
+    eq_date_db = {}
+
+    print("Loading...")
+    
+    quake = get_eq_csv()
+    for row in quake:
+        eq_date = convert_utc_to_pacific(row['time'], offset)
+        if eq_date not in eq_date_list:
+            eq_date_list.append(eq_date)
+    
+    for eq_date in eq_date_list:
+        quake = get_eq_csv()
+        dcounter = 0
+        for row in quake:
+            if eq_date == convert_utc_to_pacific(row['time'], offset):
+                dcounter += 1
+        eq_date_db.update( { eq_date : dcounter } )
+
+    os.system('clear')
+    print("Number of earthquakes per day:")
+    print("")
+    for k, v in eq_date_db.items():
+        print(f"{k}: [{v}] {'#' * int(v/10)}")
+
+
+def avg_magnitude():
+    """
+    Average earthquake magnitude for each location source
+    """
+
+    avg_mag_db = {}
+    loc_src_list = get_loc_list()
+    
+    os.system('clear')
+    print("Average earthquake magnitude:")
+    print("")
+    for loc in loc_src_list:
+        quake = get_eq_csv()
+        mag_per_loc = []
+        for row in quake:
+            if row['locationSource'] == loc:
+                mag_per_loc.append(float(row['mag']))
+        ## Per project scope definition, divide by zero shouldn't happen
+        ## But we'll check anyway
+        if len(mag_per_loc) == 0:
+            avg_mag = 0
+        else:
+            avg_mag = ( sum(mag_per_loc) / len(mag_per_loc) ) 
+
+        print(f"{loc.upper()} has had earthquakes with an average magnitudes of { avg_mag } ")
+        ## Save to a dict
+        avg_mag_db.update({ loc.upper() : avg_mag  })
+
+
+master_live_db={}
+def process_live_data_row(row):
+    ## takes 1 row of live data feed as an input and processes it
+    loc = row['locationSource'].upper()
+    if loc not in list(master_live_db):
+        master_live_db.update( { loc : [ float(row['mag']) , 1 ] } )
+    else:
+        count = master_live_db[loc][1]
+        newmag = (master_live_db[loc][0] * count + float(row['mag'])) / (count + 1)
+        master_live_db.update( { loc : [ newmag, count + 1 ] } )
+
+
+def live_data(old_timestamp=''):
+    quake = get_eq_csv()
+    mag_per_loc = []
+    for row in quake:
+        time.sleep(1)
+        process_live_data_row(row)
+        refresh_monitor()
+
+
+def refresh_monitor():
+    os.system('clear')
+    print('Displaying live average magnitude data')
+    print("Use CTRL+C to break out")
+    print("")    
+    print("|Place | # of Earthquakes | Average Magnitude|")
+    for k,v in master_live_db.items():
+        print(f"|-- {k} --|---- {v[1]} ----|---- {v[0]} ----|")
+
+
+def m_menu():
+    while True:
+        print("")
+        print("  1. Location with the most earthquakes")
+        print("  2. Histogram of the number of earthquakes per day in UTC")
+        print("  3. Histogram of the number of earthquakes per day in Pacific Time")
+        print("  4. Average earthquake magnitude by location")
+        print("  5. Live data stream (Beta)")
+        print("  0. Exit")
+        print("")
+        
+        try:
+            option = int(input("Please select from options 1-5: "))
+        except:
+            print("Invalid selection - Please try again")
+            continue
+
+        if option == 1:
+            most_eqs()
+        elif option == 2:
+            eqs_per_day(0)
+        elif option == 3:
+            eqs_per_day(-8)
+        elif option == 4:
+            avg_magnitude()
+        elif option == 5:
+            live_data()
+        elif option == 0:
+            print("Have a nice day")
+            break
+        else:
+            print("Invalid selection - Please try again")
+
+
+def get_loc_list():
+    """
+     Provides other functions with a list of all locations
+    """
+
+    loc_src_list = []
+    quake = get_eq_csv()
+    for row in quake:
+        if row['locationSource'] not in loc_src_list:
+                loc_src_list.append(row['locationSource'])
+
+    return loc_src_list
+
+
+def convert_utc_to_pacific(utcdatetime, offset):
+    utc = datetime.strptime(utcdatetime, "%Y-%m-%dT%H:%M:%S.%fZ")
+    pacific = utc + timedelta(hours = offset)
+    return str(pacific).split(' ')[0]
+
+
+def get_eq_csv():
+    
+    with open('1.0_month.csv') as eq_data: ### Testing live data with copy of csv that updates
+        read_eq_data = csv.DictReader(eq_data, delimiter=',')
+        for quake in read_eq_data:
+            yield quake        
 
 
 if __name__ == "__main__":
     main()
+

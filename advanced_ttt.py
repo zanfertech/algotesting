@@ -292,11 +292,14 @@ def best_chance(survey, xcounter):
         print(f"DEBUG: contents of survey {survey}")
     
     avail_list = list(range(1, 10))
+
     if DEBUG:
         print(f"DEBUG: avail_list before is {avail_list}")
+
     for k, v in survey.items():
         if v == 'X' or v == 'O':
             avail_list.pop(k)
+
     if DEBUG:
         print(f"DEBUG: avail_list after is {avail_list}")
 
@@ -311,7 +314,6 @@ def best_chance(survey, xcounter):
                     print(f"DEBUG: oppos at {xpos}")
                 foresite(survey, opos, xpos)
             
-
 
 def cortex(r1, r2, r3, xcounter):
     """
