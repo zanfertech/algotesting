@@ -5,44 +5,6 @@ import random
 import os
 
 
-class Advanced_AI:
-
-    def __init__(self, r1, r2, r3, xcounter):
-        self.r1 = r1
-        self.r2 = r2
-        self.r3 = r3
-        self.xcounter = xcounter
-
-
-    def test_ttt():
-    """
-    This is the from the opening from main()
-    I re-named it to test_ttt()
-    """
-        r1 = ttt_reset()[0]
-        r2 = ttt_reset()[1]
-        r3 = ttt_reset()[2]
-        counter = ttt_reset()[3]
-
-        cortex(r1, r2, r3, counter)
-
-    def cortex(r1, r2, r3, xcounter):
-        """
-        Advance calculations in order to determine
-        best possible move.
-        """
-
-        ## Construct grid
-
-        survey = { 1 : r3[0] , 2 : r3[1] , 3 : r3[2] ,
-                4 : r2[0] , 5 : r2[1] , 6 : r2[2] ,
-                7 : r1[0] , 8 : r1[1] , 9 : r1[2] }
-
-        ## Determine counter based on avaialble squares
-        xcounter = (list(survey.values()).count('O') + list(survey.values()).count('X')) + 1
-        
-        #here we go
-        best_chance(survey, xcounter)
 
         """
     Algo:
@@ -57,7 +19,7 @@ class Advanced_AI:
     any squares in a linear order that spans from one end of the grid to the other
     }
 
-    rules for ‘best chance to win’ {
+    rules for ‘best chance to win’
     possibils are ‘legal seq in grid’
     return possibils minus moves that lose minus moves that end in draw	
     }
@@ -90,6 +52,48 @@ class Advanced_AI:
         raise exception if you have to
 
         """
+
+
+
+class Advanced_AI:
+
+    def __init__(self, r1, r2, r3, xcounter):
+        self.r1 = r1
+        self.r2 = r2
+        self.r3 = r3
+        self.xcounter = xcounter
+
+
+    def test_ttt():
+    """
+    This is the from the opening from main()
+    I re-named it to test_ttt()
+    """
+        r1 = ttt_reset()[0]
+        r2 = ttt_reset()[1]
+        r3 = ttt_reset()[2]
+        counter = ttt_reset()[3]
+
+        cortex(r1, r2, r3, counter)
+
+    def cortex(r1, r2, r3, xcounter):
+        """
+        Advance calculations in order to determine
+        best possible move.
+        """
+
+        ## Construct grid
+        survey = { 1 : r3[0] , 2 : r3[1] , 3 : r3[2] ,
+                4 : r2[0] , 5 : r2[1] , 6 : r2[2] ,
+                7 : r1[0] , 8 : r1[1] , 9 : r1[2] }
+
+        ## Determine counter based on avaialble squares
+        xcounter = (list(survey.values()).count('O') + list(survey.values()).count('X')) + 1
+        
+        #here we go
+        best_chance(survey, xcounter)
+
+
 
 
     def legal_move(t, turn):
