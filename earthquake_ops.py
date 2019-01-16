@@ -11,7 +11,7 @@ def main():
     """
      Earthquake Programming Challenge
     """
-
+    os.system('clear')
     m_menu()
 
 
@@ -130,7 +130,7 @@ def live_data(old_timestamp=''):
         try:
             time.sleep(1)
         except KeyboardInterrupt as err:
-            print(f" ...Exiting")
+            print(f" ...Whoh there!!\n\nAlright, breakin' out...\n")
             break
         else:
             refresh_monitor()
@@ -175,7 +175,15 @@ def m_menu():
         elif option == 5:
             live_data()
         elif option == 0:
-            print("Have a nice day")
+            p = "."
+            for x in range(1, 8):
+                print(p)
+                p += p
+            print("\n\tYou have yourself a nice day there now\n")
+            x = len(p)//2
+            while x > 0:
+                print(p[:x])
+                x = (x//2)
             break
         else:
             print("Invalid selection - Please try again")
