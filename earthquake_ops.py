@@ -127,9 +127,14 @@ def live_data(old_timestamp=''):
     quake = get_eq_csv()
     mag_per_loc = []
     for row in quake:
-        time.sleep(1)
-        process_live_data_row(row)
-        refresh_monitor()
+        try:
+            time.sleep(1)
+        except KeyboardInterrupt as err:
+            print(f" ...Exiting")
+            break
+        else:
+            refresh_monitor()
+            process_live_data_row(row)
 
 
 def refresh_monitor():
