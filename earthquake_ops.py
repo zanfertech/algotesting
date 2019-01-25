@@ -49,8 +49,6 @@ def most_eqs():
     ## Graphical breakdown of earthquakes per location
     for k, v in eq_count_db.items():
         print(f"{k}:\t{v}\t|{'#' * int(v*100/max_val)}")
-
-
 def eqs_per_day(offset):
     """
     Histogram of the number of earthquakes per day in UTC
